@@ -1,4 +1,4 @@
-🎓 AoA AI Tutor
+🎓 AoA Virtual Assistant
 
 Voice-Enabled Domain-Specific AI Teaching Assistant for Analysis of Algorithms
 
@@ -137,7 +137,7 @@ aoa-ai-tutor/
 
 1. Clone Repository
 
-git clone https://github.com/your-username/aoa-ai-tutor.git
+git clone https://github.com/NoraizRana/aoa-virtual-assistant.git
 cd aoa-ai-tutor
 
 2. Backend Setup
