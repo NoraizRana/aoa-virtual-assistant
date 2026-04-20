@@ -1,70 +1,205 @@
-# Getting Started with Create React App
+🎓 AoA Virtual Assistant
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Voice-Enabled Domain-Specific AI Teaching Assistant for Analysis of Algorithms
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+🚀 Overview
 
-### `npm start`
+AoA AI Tutor is a web-based intelligent teaching assistant designed specifically for the Analysis of Algorithms (AoA) domain.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Unlike traditional chatbots, this system does not rely on external AI APIs. Instead, it uses a custom-built knowledge base, NLP pipeline, and retrieval system to understand and answer user queries.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The system supports both text and voice interaction, making it an interactive learning tool for students.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+🎯 Features
 
-### `npm run build`
+🧠 Intelligent Query Understanding
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Understands user intent (concept, comparison, problem-solving)
+- Handles AoA-specific queries only
+- Uses structured dataset + similarity matching
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+🎤 Voice Interaction (Core Feature)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Speech-to-Text using Web Speech API
+- Text-to-Speech responses
+- Real-time voice chatbot experience
 
-### `npm run eject`
+📚 Domain-Specific Knowledge
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Covers full AoA syllabus:
+  - Sorting Algorithms
+  - Divide & Conquer
+  - Recurrences
+  - Dynamic Programming
+  - Greedy Algorithms
+  - Graph Algorithms
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+🧩 Structured Responses
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Topic-based explanation
+- Step-by-step solutions
+- Time & Space complexity
+- Examples and reasoning
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+📊 Progress Tracking
 
-## Learn More
+- Stores user queries
+- Tracks learning history
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+🔐 Authentication System
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- JWT-based login/signup
+- Role-based access (Admin / Student)
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+🏗️ Tech Stack
 
-### Analyzing the Bundle Size
+Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- React.js
+- Tailwind CSS
+- Web Speech API
 
-### Making a Progressive Web App
+Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Node.js
+- Express.js
 
-### Advanced Configuration
+Database
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- MongoDB
 
-### Deployment
+AI / NLP
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- TF-IDF / Cosine Similarity
+- Custom dataset (no external APIs)
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+🧠 System Architecture
+
+User (Voice/Text)
+↓
+React Frontend
+↓
+Speech-to-Text
+↓
+Express API
+↓
+Query Processing Engine
+↓
+MongoDB Knowledge Base
+↓
+Response Generator
+↓
+Frontend
+↓
+Text-to-Speech
+
+---
+
+📂 Project Structure
+
+aoa-ai-tutor/
+│
+├── frontend/
+│   ├── components/
+│   ├── pages/
+│   └── services/
+│
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   └── config/
+│
+├── dataset/
+│   ├── topics.json
+│   ├── qa_pairs.json
+│   └── problems.json
+│
+├── ai-engine/
+│   ├── similarity.js
+│   ├── intentClassifier.js
+│   └── responseGenerator.js
+│
+└── README.md
+
+---
+
+⚙️ Installation & Setup
+
+1. Clone Repository
+
+git clone https://github.com/NoraizRana/aoa-virtual-assistant.git
+cd aoa-ai-tutor
+
+2. Backend Setup
+
+cd backend
+npm install
+
+Create ".env" file:
+
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/aoa_assistant
+JWT_SECRET=your_secret_key
+
+Run backend:
+
+npm run dev
+
+---
+
+3. Frontend Setup
+
+cd frontend
+npm install
+npm start
+
+---
+
+🎤 Voice Features
+
+- Click microphone to start speaking
+- Converts speech → text
+- Sends query to backend
+- AI response is read aloud using Text-to-Speech
+
+---
+
+🧪 Sample Queries
+
+- "Explain merge sort"
+- "Quick sort vs merge sort"
+- "Solve T(n) = 2T(n/2) + n"
+- "What is time complexity of BFS?"
+
+---
+
+📈 Future Improvements
+
+- Advanced NLP 
+- Mathematical solver integration
+- Self-learning system from user queries
+- Improved intent classification
+
+---
+
+👨‍💻 Author
+
+Noraiz Rana
+BS Information Technology – Final Year Project
+
+---
+
+📜 License
+
+MIT.
+>>>>>>> 46e689c930f4dee3c8fa0cbb1e83e444ce5b3856
