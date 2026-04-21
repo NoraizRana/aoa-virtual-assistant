@@ -1,646 +1,1524 @@
 [
   {
-    "id": "insertion-sort",
-    "name": "Insertion Sort",
-    "aliases": ["insertion sort", "insertionsort", "insert sort"],
-    "category": "sorting",
+    "id": "role-analyzing-designing-algorithms",
+    "name": "Role of Algorithms, Analyzing Algorithms, and Designing Algorithms",
+    "aliases": [
+      "Algorithm Foundations",
+      "Analyzing and Designing Algorithms"
+    ],
+    "category": "design",
     "difficulty": "beginner",
-    "definition": "Insertion Sort builds a sorted array one element at a time by taking each element and inserting it into its correct position among the previously sorted elements. Like sorting a hand of playing cards.",
-    "intuition": "Imagine sorting playing cards in your hand. You pick up one card at a time and insert it into the correct position among the cards you already hold.",
+    "definition": "An algorithm is any well-defined computational procedure that takes some value, or set of values, as input and produces some value, or set of values, as output. It is a sequence of computational steps that transform the input into the output. It can also be viewed as a tool for solving a well-specified computational problem.",
+    "intuition": "Like a recipe in a cookbook, an algorithm provides a set of specific steps to reach a desired outcome, such as sorting a deck of cards or finding the fastest route to a destination.",
     "steps": [
-      "Start from the second element (index 1), treat first element as sorted",
-      "Pick the current element as 'key'",
-      "Compare key with each element to its left",
-      "Shift elements that are greater than key one position to the right",
-      "Insert key into the correct position",
-      "Repeat for all remaining elements"
+      "Understand the problem statement including the set of all valid inputs and the required output relationship.",
+      "Specify a precise computational procedure to achieve the input/output relationship.",
+      "Analyze the algorithm to predict resources required, primarily computational time and memory space.",
+      "Ensure the algorithm is correct by demonstrating that it halts with the correct output for every input instance.",
+      "Refine the design using techniques like incremental or divide-and-conquer approaches to improve efficiency."
     ],
-    "pseudocode": "INSERTION-SORT(A):\n  for j = 2 to A.length\n    key = A[j]\n    i = j - 1\n    while i > 0 and A[i] > key\n      A[i+1] = A[i]\n      i = i - 1\n    A[i+1] = key",
+    "pseudocode": "INSERTION-SORT(A)\n1 for j = 2 to A.length\n2   key = A[j]\n3   // Insert A[j] into the sorted sequence A[1..j - 1].\n4   i = j - 1\n5   while i > 0 and A[i] > key\n6     A[i + 1] = A[i]\n7     i = i - 1\n8   A[i + 1] = key",
     "example": {
-      "input": "[5, 2, 4, 6, 1, 3]",
+      "input": "A = <5, 2, 4, 6, 1, 3>",
       "steps": [
-        "j=2: key=2, shift 5 right → [2, 5, 4, 6, 1, 3]",
-        "j=3: key=4, shift 5 right → [2, 4, 5, 6, 1, 3]",
-        "j=4: key=6, no shift → [2, 4, 5, 6, 1, 3]",
-        "j=5: key=1, shift all → [1, 2, 4, 5, 6, 3]",
-        "j=6: key=3, shift → [1, 2, 3, 4, 5, 6]"
+        "j=2: key=2. A=5 > 2, move 5. A becomes <5, 5, 4, 6, 1, 3>, then <2, 5, 4, 6, 1, 3>.",
+        "j=3: key=4. A=5 > 4, move 5. A becomes <2, 5, 5, 6, 1, 3>, then <2, 4, 5, 6, 1, 3>.",
+        "j=4: key=6. A=5 < 6, no move. A remains <2, 4, 5, 6, 1, 3>.",
+        "j=5: key=1. Move 6, 5, 4, 2. A becomes <1, 2, 4, 5, 6, 3>.",
+        "j=6: key=3. Move 6, 5, 4. A becomes <1, 2, 3, 4, 5, 6>."
       ],
-      "output": "[1, 2, 3, 4, 5, 6]"
+      "output": "<1, 2, 3, 4, 5, 6>"
     },
     "complexity": {
-      "time": { "best": "O(n) — already sorted", "average": "O(n²)", "worst": "O(n²) — reverse sorted" },
-      "space": "O(1)",
-      "recurrence": "T(n) = T(n-1) + O(n)"
+      "time": {
+        "best": "Theta(n) (Input already sorted)",
+        "average": "Theta(n^2)",
+        "worst": "Theta(n^2) (Input reverse sorted)"
+      },
+      "space": "O(1) (Sorts in place)",
+      "recurrence": "N/A (Iterative)"
     },
-    "advantages": ["In-place sorting", "Stable algorithm", "Efficient for small or nearly sorted arrays", "Online — can sort as it receives data"],
-    "disadvantages": ["O(n²) for large inputs", "Not suitable for large datasets"],
+    "proof_or_correctness": "Loop Invariant: At the start of each iteration of the for loop of lines 1–8, the subarray A[1..j-1] consists of the elements originally in A[1..j-1], but in sorted order.",
+    "advantages": [
+      "Efficient for small input sizes.",
+      "Sorts in place, requiring minimal extra memory.",
+      "Simple to implement."
+    ],
+    "disadvantages": [
+      "Inefficient for large input sizes compared to merge sort.",
+      "Worst-case running time is quadratic."
+    ],
     "comparisons": {
-      "merge_sort": "Insertion Sort is simpler and faster for small arrays but O(n²) vs Merge Sort's O(n log n) for large inputs.",
-      "bubble_sort": "Both are O(n²) but Insertion Sort performs fewer swaps and is faster in practice.",
-      "selection_sort": "Both O(n²) but Insertion Sort is stable and faster on nearly sorted data."
+      "merge_sort": "Insertion sort uses an incremental approach and is faster for small inputs, whereas merge sort uses divide-and-conquer and is asymptotically faster at Theta(n lg n)."
     },
-    "loop_invariant": "At the start of each iteration of the for loop, the subarray A[1..j-1] consists of the elements originally in A[1..j-1] but in sorted order.",
-    "clo_mapping": ["CLO-1", "CLO-2", "CLO-3"],
-    "related_topics": ["merge-sort", "bubble-sort", "selection-sort", "loop-invariant"]
+    "common_mistakes": [
+      "Incorrectly indexing the array (e.g., starting at 0 vs 1 in pseudocode).",
+      "Failing to account for the constant factors that allow insertion sort to beat merge sort on small n."
+    ],
+    "exam_questions": [
+      {
+        "question": "What is an algorithm instance?",
+        "answer": "An instance of a problem consists of the input (satisfying whatever constraints are imposed in the problem statement) needed to compute a solution to the problem."
+      },
+      {
+        "question": "When is an algorithm said to be correct?",
+        "answer": "An algorithm is correct if, for every input instance, it halts with the correct output."
+      },
+      {
+        "question": "What is the primary measure of algorithm efficiency used in the text?",
+        "answer": "Speed, specifically the running time or how long an algorithm takes to produce its result."
+      },
+      {
+        "question": "Explain the RAM model of computation.",
+        "answer": "A generic one-processor model where instructions (arithmetic, data movement, control) are executed one after another with no concurrent operations, each taking a constant amount of time."
+      },
+      {
+        "question": "Why do we generally focus on worst-case running time?",
+        "answer": "It provides an upper bound guarantee for any input, the worst case often occurs in practice (e.g., searching), and average cases are often as bad as the worst case."
+      },
+      {
+        "question": "Define 'order of growth'.",
+        "answer": "The rate at which the running time increases with the input size, usually considering only the leading term of the formula and ignoring constant coefficients."
+      },
+      {
+        "question": "Give an example of an application requiring algorithmic content at the application level.",
+        "answer": "A Web-based service determining travel routes, which requires algorithms for finding routes (shortest paths), rendering maps, and interpolating addresses."
+      },
+      {
+        "question": "How does the incremental design approach work?",
+        "answer": "It builds a solution piece by piece, such as inserting a single element into an already sorted subarray in insertion sort."
+      },
+      {
+        "question": "What is the crossover point between 8n^2 and 64n lg n?",
+        "answer": "It is the value of n where 8n^2 = 64n lg n, or n = 8 lg n. For n > 1, this happens between n=2 and n=43 (specifically n=43)."
+      },
+      {
+        "question": "What are NP-complete problems?",
+        "answer": "A subset of problems for which no efficient (polynomial-time) solution is known, but no proof exists that one cannot be found."
+      }
+    ],
+    "related_topics": [
+      "growth-of-functions-asymptotic-notation",
+      "divide-and-conquer"
+    ]
   },
   {
-    "id": "merge-sort",
-    "name": "Merge Sort",
-    "aliases": ["merge sort", "mergesort", "merge sorting", "divide and conquer sort"],
-    "category": "sorting",
-    "difficulty": "intermediate",
-    "definition": "Merge Sort is a divide-and-conquer algorithm that recursively splits an array into two halves, sorts each half, and merges them back into a sorted array. It is defined by the recurrence T(n) = 2T(n/2) + Θ(n).",
-    "intuition": "Split a deck of cards into two piles. Sort each pile separately (recursively). Then merge by always picking the smaller top card from either pile.",
-    "steps": [
-      "Divide: Split array A[p..r] at midpoint q = floor((p+r)/2)",
-      "Conquer: Recursively sort A[p..q] and A[q+1..r]",
-      "Combine: Merge the two sorted subarrays using MERGE procedure",
-      "MERGE compares elements from both halves and places smaller one into result",
-      "Base case: array of length 1 is already sorted"
+    "id": "growth-of-functions-asymptotic-notation",
+    "name": "Growth of Functions and Asymptotic Notation",
+    "aliases": [
+      "Big-O Notation",
+      "Asymptotic Efficiency"
     ],
-    "pseudocode": "MERGE-SORT(A, p, r):\n  if p < r\n    q = floor((p+r)/2)\n    MERGE-SORT(A, p, q)\n    MERGE-SORT(A, q+1, r)\n    MERGE(A, p, q, r)\n\nMERGE(A, p, q, r):\n  n1 = q - p + 1\n  n2 = r - q\n  create arrays L[1..n1+1] and R[1..n2+1]\n  for i=1 to n1: L[i] = A[p+i-1]\n  for j=1 to n2: R[j] = A[q+j]\n  L[n1+1] = R[n2+1] = infinity (sentinel)\n  i=1, j=1\n  for k=p to r:\n    if L[i] <= R[j]: A[k]=L[i], i++\n    else: A[k]=R[j], j++",
-    "example": {
-      "input": "[38, 27, 43, 3, 9, 82, 10]",
-      "steps": [
-        "Split → [38,27,43,3] | [9,82,10]",
-        "Split → [38,27] | [43,3] | [9,82] | [10]",
-        "Split → [38]|[27] | [43]|[3] | [9]|[82] | [10]",
-        "Merge → [27,38] | [3,43] | [9,82] | [10]",
-        "Merge → [3,27,38,43] | [9,10,82]",
-        "Merge → [3,9,10,27,38,43,82]"
-      ],
-      "output": "[3, 9, 10, 27, 38, 43, 82]"
-    },
-    "complexity": {
-      "time": { "best": "O(n log n)", "average": "O(n log n)", "worst": "O(n log n)" },
-      "space": "O(n)",
-      "recurrence": "T(n) = 2T(n/2) + Θ(n)"
-    },
-    "recurrence_solution": { "relation": "T(n) = 2T(n/2) + n", "method": "Master Theorem Case 2", "a": 2, "b": 2, "k": 1, "solution": "T(n) = O(n log n)" },
-    "advantages": ["Stable sort", "Guaranteed O(n log n) always", "Excellent for linked lists", "Parallelizable"],
-    "disadvantages": ["O(n) extra space required", "Slower than Quick Sort in practice for small n"],
-    "comparisons": {
-      "quick_sort": "Merge Sort is stable and always O(n log n) but uses O(n) space. Quick Sort is faster in practice but O(n²) worst case.",
-      "heap_sort": "Both O(n log n) worst case. Merge Sort is stable, Heap Sort is in-place.",
-      "insertion_sort": "Merge Sort is far better for large n. Use Insertion Sort for n < 20."
-    },
-    "clo_mapping": ["CLO-1", "CLO-3", "CLO-6"],
-    "related_topics": ["quick-sort", "heap-sort", "divide-and-conquer", "master-theorem"]
-  },
-  {
-    "id": "quick-sort",
-    "name": "Quick Sort",
-    "aliases": ["quick sort", "quicksort", "partition sort", "pivot sort"],
-    "category": "sorting",
-    "difficulty": "intermediate",
-    "definition": "Quick Sort selects a pivot element, partitions the array so all elements smaller than pivot come before it and larger ones after, then recursively sorts both partitions. Average case T(n) = 2T(n/2) + Θ(n).",
-    "intuition": "Choose any element as a pivot. After partitioning, that pivot is in its final sorted position. Recursively sort both halves around it.",
-    "steps": [
-      "Choose pivot (typically last element A[r])",
-      "PARTITION: i = p-1",
-      "For j = p to r-1: if A[j] <= pivot, increment i and swap A[i] with A[j]",
-      "Place pivot at A[i+1] by swapping with A[r]",
-      "Recursively sort A[p..i] and A[i+2..r]"
-    ],
-    "pseudocode": "QUICKSORT(A, p, r):\n  if p < r\n    q = PARTITION(A, p, r)\n    QUICKSORT(A, p, q-1)\n    QUICKSORT(A, q+1, r)\n\nPARTITION(A, p, r):\n  x = A[r]   // pivot\n  i = p - 1\n  for j = p to r-1\n    if A[j] <= x\n      i = i + 1\n      swap A[i] with A[j]\n  swap A[i+1] with A[r]\n  return i+1",
-    "example": {
-      "input": "[13, 19, 9, 5, 12, 8, 7, 4, 11, 2, 6, 21]",
-      "steps": [
-        "Pivot = 6 (last element)",
-        "Partition: all ≤ 6 go left → [5,2,4,6,12,8,7,13,11,9,19,21]",
-        "Pivot 6 is now at correct position (index 3)",
-        "Recursively sort [5,2,4] and [12,8,7,13,11,9,19,21]",
-        "Final: [2,4,5,6,7,8,9,11,12,13,19,21]"
-      ],
-      "output": "[2, 4, 5, 6, 7, 8, 9, 11, 12, 13, 19, 21]"
-    },
-    "complexity": {
-      "time": { "best": "O(n log n)", "average": "O(n log n)", "worst": "O(n²) — sorted/reverse sorted input" },
-      "space": "O(log n) stack space",
-      "recurrence": "T(n) = T(k) + T(n-k-1) + Θ(n)"
-    },
-    "recurrence_solution": { "relation": "T(n) = 2T(n/2) + n (balanced)", "method": "Master Theorem Case 2", "solution": "T(n) = O(n log n) average" },
-    "advantages": ["In-place sorting", "Cache friendly", "Fast in practice", "O(log n) space"],
-    "disadvantages": ["O(n²) worst case", "Not stable", "Pivot selection matters"],
-    "comparisons": {
-      "merge_sort": "Quick Sort uses O(log n) space vs O(n). Quick Sort faster in practice but not stable and has O(n²) worst case.",
-      "heap_sort": "Heap Sort guarantees O(n log n) worst case. Quick Sort is faster in practice but not stable.",
-      "insertion_sort": "Quick Sort dominates for large n. Insertion Sort wins for very small n (< 20 elements)."
-    },
-    "clo_mapping": ["CLO-1", "CLO-3", "CLO-6"],
-    "related_topics": ["merge-sort", "heap-sort", "randomized-algorithms", "partitioning"]
-  },
-  {
-    "id": "heap-sort",
-    "name": "Heap Sort",
-    "aliases": ["heap sort", "heapsort", "heap-sort", "priority queue sort"],
-    "category": "sorting",
-    "difficulty": "intermediate",
-    "definition": "Heap Sort uses a max-heap data structure to sort an array. It first builds a max-heap from the input, then repeatedly extracts the maximum element and places it at the end of the array.",
-    "intuition": "Build a max-heap (parent always >= children). The root is always the maximum. Swap root with last element, reduce heap size, fix heap, repeat.",
-    "steps": [
-      "BUILD-MAX-HEAP: Convert array into a max-heap in O(n)",
-      "For i = n down to 2: swap A[1] with A[i]",
-      "Reduce heap size by 1",
-      "Call MAX-HEAPIFY to restore max-heap property",
-      "Repeat until heap size is 1"
-    ],
-    "pseudocode": "HEAPSORT(A):\n  BUILD-MAX-HEAP(A)\n  for i = A.length downto 2\n    swap A[1] with A[i]\n    A.heap-size = A.heap-size - 1\n    MAX-HEAPIFY(A, 1)\n\nMAX-HEAPIFY(A, i):\n  l = LEFT(i), r = RIGHT(i)\n  largest = i\n  if l <= heap-size and A[l] > A[i]: largest = l\n  if r <= heap-size and A[r] > A[largest]: largest = r\n  if largest != i:\n    swap A[i] with A[largest]\n    MAX-HEAPIFY(A, largest)",
-    "example": {
-      "input": "[4, 1, 3, 2, 16, 9, 10, 14, 8, 7]",
-      "steps": [
-        "Build max-heap → [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]",
-        "Swap 16 with last, heapify → [14, 8, 10, 4, 7, 9, 3, 2, 1] | 16",
-        "Swap 14 with last, heapify → [10, 8, 9, 4, 7, 1, 3, 2] | 14, 16",
-        "Continue until sorted..."
-      ],
-      "output": "[1, 2, 3, 4, 7, 8, 9, 10, 14, 16]"
-    },
-    "complexity": {
-      "time": { "best": "O(n log n)", "average": "O(n log n)", "worst": "O(n log n)" },
-      "space": "O(1)",
-      "recurrence": "T(n) = O(n) + n * O(log n)"
-    },
-    "heap_properties": {
-      "max_heap": "A[PARENT(i)] >= A[i] for all i > 1",
-      "min_heap": "A[PARENT(i)] <= A[i] for all i > 1",
-      "height": "floor(log n) for n elements"
-    },
-    "advantages": ["In-place O(1) space", "Guaranteed O(n log n)", "Builds priority queue as byproduct"],
-    "disadvantages": ["Not stable", "Poor cache performance", "Slower than Quick Sort in practice"],
-    "clo_mapping": ["CLO-1", "CLO-3"],
-    "related_topics": ["merge-sort", "quick-sort", "priority-queue", "binary-heap"]
-  },
-  {
-    "id": "counting-sort",
-    "name": "Counting Sort",
-    "aliases": ["counting sort", "countingsort", "count sort", "linear sort"],
-    "category": "sorting",
-    "difficulty": "intermediate",
-    "definition": "Counting Sort is a non-comparison-based sorting algorithm that counts the occurrences of each element and uses these counts to determine sorted positions. It beats the Ω(n log n) lower bound by not using comparisons.",
-    "intuition": "Count how many elements are ≤ each value. Then each element knows exactly where it belongs in the sorted output.",
-    "steps": [
-      "Find range k (maximum value in array)",
-      "Initialize count array C[0..k] with zeros",
-      "Count occurrences: C[A[j]]++ for each element",
-      "Accumulate: C[i] = C[i] + C[i-1] (how many elements ≤ i)",
-      "Build output: place A[j] at position C[A[j]], decrement C[A[j]]"
-    ],
-    "pseudocode": "COUNTING-SORT(A, B, k):\n  let C[0..k] be new array, initialize to 0\n  for j = 1 to A.length: C[A[j]] += 1\n  for i = 1 to k: C[i] = C[i] + C[i-1]\n  for j = A.length downto 1:\n    B[C[A[j]]] = A[j]\n    C[A[j]] -= 1",
-    "example": {
-      "input": "[2, 5, 3, 0, 2, 3, 0, 3], k=5",
-      "steps": ["Count: C=[2,0,2,3,0,1]", "Accumulate: C=[2,2,4,7,7,8]", "Output: [0,0,2,2,3,3,3,5]"],
-      "output": "[0, 0, 2, 2, 3, 3, 3, 5]"
-    },
-    "complexity": {
-      "time": { "best": "O(n+k)", "average": "O(n+k)", "worst": "O(n+k)" },
-      "space": "O(k)"
-    },
-    "when_to_use": "When k = O(n), i.e., range of values is proportional to number of elements",
-    "advantages": ["O(n+k) time — beats comparison lower bound", "Stable sort", "Used as subroutine in Radix Sort"],
-    "disadvantages": ["Only works for integer keys in limited range", "O(k) extra space — bad if k >> n"],
-    "clo_mapping": ["CLO-1", "CLO-3", "CLO-4"],
-    "related_topics": ["radix-sort", "bucket-sort", "lower-bounds-sorting"]
-  },
-  {
-    "id": "binary-search",
-    "name": "Binary Search",
-    "aliases": ["binary search", "binary", "bisect", "half interval search", "logarithmic search", "log search"],
-    "category": "searching",
-    "difficulty": "beginner",
-    "definition": "Binary Search finds a target value in a sorted array by repeatedly halving the search space. Each comparison eliminates half the remaining candidates, giving O(log n) time.",
-    "intuition": "Like finding a word in a dictionary — open to the middle, decide which half your word is in, repeat.",
-    "steps": [
-      "Precondition: array must be sorted",
-      "Set low = 0, high = n-1",
-      "Compute mid = floor((low + high) / 2)",
-      "If A[mid] == target: return mid (found)",
-      "If target < A[mid]: high = mid - 1 (search left half)",
-      "If target > A[mid]: low = mid + 1 (search right half)",
-      "Repeat until low > high (not found, return -1)"
-    ],
-    "pseudocode": "BINARY-SEARCH(A, n, target):\n  low = 0, high = n-1\n  while low <= high\n    mid = floor((low + high) / 2)\n    if A[mid] == target: return mid\n    elif A[mid] < target: low = mid + 1\n    else: high = mid - 1\n  return -1  // not found",
-    "example": {
-      "input": "A=[2,5,8,12,16,23,38,56,72,91], target=23",
-      "steps": [
-        "low=0, high=9 → mid=4, A[4]=16 < 23 → low=5",
-        "low=5, high=9 → mid=7, A[7]=56 > 23 → high=6",
-        "low=5, high=6 → mid=5, A[5]=23 == 23 → FOUND at index 5"
-      ],
-      "output": "Index 5"
-    },
-    "complexity": {
-      "time": { "best": "O(1) — target at midpoint", "average": "O(log n)", "worst": "O(log n)" },
-      "space": "O(1) iterative, O(log n) recursive",
-      "recurrence": "T(n) = T(n/2) + O(1)"
-    },
-    "recurrence_solution": { "relation": "T(n) = T(n/2) + 1", "method": "Master Theorem Case 2", "a": 1, "b": 2, "k": 0, "solution": "T(n) = O(log n)" },
-    "comparisons": {
-      "linear_search": "Binary Search O(log n) vs Linear O(n). Binary requires sorted array.",
-      "hash_table": "Hash gives O(1) average lookup but Binary Search requires no extra space beyond sorted array."
-    },
-    "clo_mapping": ["CLO-1", "CLO-2", "CLO-3"],
-    "related_topics": ["linear-search", "sorting", "divide-and-conquer", "binary-search-trees"]
-  },
-  {
-    "id": "big-o-notation",
-    "name": "Asymptotic Notation",
-    "aliases": ["big o", "big omega", "big theta", "asymptotic", "time complexity", "space complexity", "notation", "o notation", "growth of functions", "asymptotic notation"],
-    "category": "complexity",
-    "difficulty": "beginner",
-    "definition": "Asymptotic notation characterizes the running time of algorithms in terms of input size n, ignoring constants and lower-order terms. It describes worst-case (O), best-case (Ω), and tight (Θ) bounds.",
-    "intuition": "We don't care if an algorithm takes 3n² + 5n + 2 steps — we just care that it grows like n². Constants depend on hardware; growth rate is what matters.",
-    "notations": {
-      "big_theta": { "symbol": "Θ(g(n))", "meaning": "Tight bound — sandwiched between c₁g(n) and c₂g(n) for all n ≥ n₀", "formal": "Θ(g(n)) = {f(n): ∃ c₁,c₂,n₀>0 s.t. c₁g(n) ≤ f(n) ≤ c₂g(n) ∀ n≥n₀}" },
-      "big_o": { "symbol": "O(g(n))", "meaning": "Upper bound — f(n) ≤ cg(n) for large n. Worst case.", "formal": "O(g(n)) = {f(n): ∃ c,n₀>0 s.t. f(n) ≤ cg(n) ∀ n≥n₀}" },
-      "big_omega": { "symbol": "Ω(g(n))", "meaning": "Lower bound — f(n) ≥ cg(n) for large n. Best case.", "formal": "Ω(g(n)) = {f(n): ∃ c,n₀>0 s.t. f(n) ≥ cg(n) ∀ n≥n₀}" },
-      "little_o": { "symbol": "o(g(n))", "meaning": "Strictly less than — f grows strictly slower than g. Not tight.", "formal": "lim[n→∞] f(n)/g(n) = 0" },
-      "little_omega": { "symbol": "ω(g(n))", "meaning": "Strictly greater than — f grows strictly faster than g.", "formal": "lim[n→∞] f(n)/g(n) = ∞" }
-    },
-    "common_complexities": [
-      { "notation": "O(1)", "name": "Constant", "example": "Array index access, hash table lookup" },
-      { "notation": "O(log n)", "name": "Logarithmic", "example": "Binary Search, balanced BST operations" },
-      { "notation": "O(n)", "name": "Linear", "example": "Linear Search, counting elements" },
-      { "notation": "O(n log n)", "name": "Linearithmic", "example": "Merge Sort, Heap Sort, Quick Sort average" },
-      { "notation": "O(n²)", "name": "Quadratic", "example": "Bubble Sort, Insertion Sort worst, nested loops" },
-      { "notation": "O(n³)", "name": "Cubic", "example": "Floyd-Warshall, naive matrix multiplication" },
-      { "notation": "O(2ⁿ)", "name": "Exponential", "example": "Naive Fibonacci, Travelling Salesman brute force" },
-      { "notation": "O(n!)", "name": "Factorial", "example": "Permutation generation, brute force TSP" }
-    ],
-    "key_theorems": [
-      "If f(n) = Θ(g(n)), then f(n) = O(g(n)) and f(n) = Ω(g(n))",
-      "Transitivity: if f=O(g) and g=O(h) then f=O(h)",
-      "For polynomial p(n) = aₖnᵏ + ... + a₀ with aₖ > 0: p(n) = Θ(nᵏ)"
-    ],
-    "clo_mapping": ["CLO-1", "CLO-4", "CLO-5"],
-    "related_topics": ["master-theorem", "loop-analysis", "recurrence-relations"]
-  },
-  {
-    "id": "master-theorem",
-    "name": "Master Theorem",
-    "aliases": ["master theorem", "master method", "recurrence", "recurrence relation", "solve recurrence", "t(n)", "recurrence solving"],
     "category": "complexity",
     "difficulty": "intermediate",
-    "definition": "The Master Theorem provides a direct solution to recurrences of the form T(n) = aT(n/b) + f(n), where a≥1 and b>1, which arise from divide-and-conquer algorithms.",
-    "intuition": "The recurrence compares the work done at the top level f(n) vs the total work at the leaves nˡᵒᵍᵦᵃ. Whoever is polynomially larger dominates the total.",
-    "formula": "T(n) = aT(n/b) + f(n), where a ≥ 1, b > 1",
-    "cases": [
-      { "case": "Case 1", "condition": "f(n) = O(n^(log_b(a) - ε)) for some ε > 0", "result": "T(n) = Θ(n^log_b(a))", "meaning": "Recursive work dominates — leaves dominate" },
-      { "case": "Case 2", "condition": "f(n) = Θ(n^log_b(a))", "result": "T(n) = Θ(n^log_b(a) · log n)", "meaning": "Work is balanced at every level" },
-      { "case": "Case 3", "condition": "f(n) = Ω(n^(log_b(a) + ε)) and af(n/b) ≤ cf(n)", "result": "T(n) = Θ(f(n))", "meaning": "Non-recursive work dominates — root dominates" }
-    ],
-    "examples": [
-      { "recurrence": "T(n) = 2T(n/2) + n", "a": 2, "b": 2, "fn": "n", "log_b_a": "log₂2=1", "comparison": "n¹ = n, so Case 2", "solution": "T(n) = Θ(n log n)", "algorithm": "Merge Sort" },
-      { "recurrence": "T(n) = 2T(n/2) + 1", "a": 2, "b": 2, "fn": "1", "log_b_a": "log₂2=1", "comparison": "1 < n¹, so Case 1", "solution": "T(n) = Θ(n)", "algorithm": "Binary tree traversal" },
-      { "recurrence": "T(n) = T(n/2) + 1", "a": 1, "b": 2, "fn": "1", "log_b_a": "log₂1=0", "comparison": "1 = n⁰, so Case 2", "solution": "T(n) = Θ(log n)", "algorithm": "Binary Search" },
-      { "recurrence": "T(n) = 4T(n/2) + n²", "a": 4, "b": 2, "fn": "n²", "log_b_a": "log₂4=2", "comparison": "n² = n², so Case 2", "solution": "T(n) = Θ(n² log n)", "algorithm": "Strassen-like" },
-      { "recurrence": "T(n) = 9T(n/3) + n", "a": 9, "b": 3, "fn": "n", "log_b_a": "log₃9=2", "comparison": "n < n², so Case 1", "solution": "T(n) = Θ(n²)", "algorithm": "Some divide algorithms" }
-    ],
+    "definition": "Asymptotic notation describes the behavior of functions as the input size n increases without bound. It includes Theta (tight bound), O (upper bound), Omega (lower bound), o (non-tight upper bound), and omega (non-tight lower bound).",
+    "intuition": "It focuses on the 'big picture' of how an algorithm's performance scales, ignoring minor details and constant factors that don't matter as the problem gets very large.",
     "steps": [
-      "Identify a (number of subproblems), b (size reduction factor), f(n) (combine cost)",
-      "Compute log_b(a)",
-      "Compare f(n) with n^log_b(a)",
-      "Apply the matching case",
-      "State the solution"
+      "Identify the running time function T(n) for an algorithm.",
+      "Focus on the highest-order term (the leading term).",
+      "Ignore constant coefficients.",
+      "Apply the appropriate notation (Theta, O, Omega) based on whether you are describing a tight, upper, or lower bound."
     ],
-    "clo_mapping": ["CLO-1", "CLO-3", "CLO-5"],
-    "related_topics": ["big-o-notation", "divide-and-conquer", "merge-sort", "recurrence-relations"]
-  },
-  {
-    "id": "dynamic-programming",
-    "name": "Dynamic Programming",
-    "aliases": ["dynamic programming", "dp", "memoization", "tabulation", "overlapping subproblems", "optimal substructure"],
-    "category": "dynamic programming",
-    "difficulty": "advanced",
-    "definition": "Dynamic Programming solves optimization problems by breaking them into overlapping subproblems, solving each subproblem exactly once, and storing results in a table (memoization/tabulation) to avoid redundant computation.",
-    "intuition": "If computing F(5) requires F(4) and F(3), and F(4) also requires F(3) — why compute F(3) twice? Compute it once, store it, reuse it.",
-    "two_conditions": {
-      "optimal_substructure": "Optimal solution to the problem contains optimal solutions to subproblems",
-      "overlapping_subproblems": "Same subproblems are solved repeatedly in the naive recursive solution"
-    },
-    "approaches": {
-      "memoization": "Top-down: solve recursively, cache results in table. Natural recursive structure, lazy evaluation.",
-      "tabulation": "Bottom-up: fill table iteratively from smallest subproblems to largest. Usually faster in practice."
-    },
-    "steps": [
-      "Identify the problem has optimal substructure and overlapping subproblems",
-      "Define the state dp[i] or dp[i][j] — what each entry represents",
-      "Write the recurrence relation for dp[i] in terms of smaller subproblems",
-      "Identify base cases (smallest subproblems)",
-      "Fill table bottom-up (tabulation) or top-down with memoization",
-      "Return dp[n] as the final answer"
-    ],
-    "classic_problems": [
-      "Rod Cutting — maximize revenue by cutting rod into pieces",
-      "Matrix Chain Multiplication — minimize scalar multiplications",
-      "Longest Common Subsequence (LCS)",
-      "Longest Increasing Subsequence (LIS)",
-      "0/1 Knapsack Problem",
-      "Coin Change Problem",
-      "Edit Distance (Levenshtein distance)",
-      "Optimal Binary Search Trees"
-    ],
+    "pseudocode": "N/A (Mathematical Notation)",
     "example": {
-      "problem": "Rod Cutting — rod of length n, price p[i] for length i. Maximize revenue.",
-      "recurrence": "r(n) = max(p[i] + r[n-i]) for i = 1 to n",
-      "base_case": "r(0) = 0",
-      "naive": "Exponential O(2ⁿ) — exponentially many ways to cut",
-      "dp_solution": "Fill r[1..n] iteratively in O(n²)"
-    },
-    "complexity": { "time": "O(n²) for most problems, O(nW) for knapsack", "space": "O(n) to O(n²) depending on problem" },
-    "comparisons": {
-      "greedy": "DP considers all subproblem solutions and picks optimal. Greedy makes one locally optimal choice — faster but not always correct.",
-      "divide_conquer": "Divide and Conquer: independent subproblems (no overlap). DP: overlapping subproblems stored in table."
-    },
-    "clo_mapping": ["CLO-6", "CLO-7"],
-    "related_topics": ["greedy-algorithms", "memoization", "recurrence-relations", "knapsack", "lcs", "matrix-chain"]
-  },
-  {
-    "id": "greedy-algorithms",
-    "name": "Greedy Algorithms",
-    "aliases": ["greedy", "greedy algorithm", "greedy approach", "greedy method", "activity selection", "greedy strategy"],
-    "category": "greedy",
-    "difficulty": "intermediate",
-    "definition": "A greedy algorithm makes the locally optimal choice at each step, hoping to find a global optimum. Unlike DP, it never reconsiders choices. Works when the problem has the greedy choice property.",
-    "intuition": "Always pick what looks best right now. Like making change with coins — always use the largest denomination coin that fits.",
-    "greedy_choice_property": "A globally optimal solution can be arrived at by making a locally optimal (greedy) choice.",
-    "steps": [
-      "Prove the problem has optimal substructure",
-      "Prove the greedy choice property holds",
-      "Design greedy rule (what to pick at each step)",
-      "Apply greedy choice, reduce to smaller subproblem",
-      "Repeat until done"
-    ],
-    "classic_problems": [
-      "Activity Selection — select maximum non-overlapping activities",
-      "Huffman Coding — optimal prefix-free binary codes",
-      "Fractional Knapsack",
-      "Minimum Spanning Tree (Kruskal, Prim)",
-      "Dijkstra's Shortest Path",
-      "Job Scheduling",
-      "Coin Change (for certain denominations)"
-    ],
-    "example": {
-      "problem": "Activity Selection: given activities with start/finish times, select maximum compatible set",
-      "greedy_rule": "Always select the activity with the earliest finish time",
-      "intuition": "Finishing early leaves maximum room for future activities",
-      "proof": "Exchange argument: any optimal solution can be converted to include earliest-finish activity without losing optimality"
-    },
-    "complexity": { "time": "O(n log n) for activity selection (sorting dominates)", "space": "O(1) extra" },
-    "comparisons": {
-      "dynamic_programming": "Greedy is faster but only correct when greedy choice property holds. DP always finds optimal but slower.",
-      "brute_force": "Greedy is polynomial; brute force exponential."
-    },
-    "clo_mapping": ["CLO-6"],
-    "related_topics": ["dynamic-programming", "huffman-coding", "minimum-spanning-tree", "dijkstra"]
-  },
-  {
-    "id": "bfs",
-    "name": "BFS (Breadth-First Search)",
-    "aliases": ["bfs", "breadth first search", "breadth first", "level order", "level traversal", "breadth-first"],
-    "category": "graph",
-    "difficulty": "intermediate",
-    "definition": "BFS explores a graph level by level, visiting all vertices at distance k from source before any vertex at distance k+1. Uses a FIFO queue. Computes shortest paths in unweighted graphs.",
-    "intuition": "Like ripples in a pond — explore all vertices one hop away, then two hops, then three. Use a queue to process in order.",
-    "steps": [
-      "Initialize: color all vertices WHITE, distance = ∞, predecessor = NIL",
-      "Set source: color = GRAY, distance = 0",
-      "Enqueue source into queue Q",
-      "While Q is not empty: dequeue vertex u",
-      "For each adjacent vertex v: if v is WHITE, set v.color=GRAY, v.d=u.d+1, v.π=u, enqueue v",
-      "Set u.color = BLACK (fully explored)"
-    ],
-    "pseudocode": "BFS(G, s):\n  for each u in G.V - {s}:\n    u.color = WHITE, u.d = ∞, u.π = NIL\n  s.color = GRAY, s.d = 0, s.π = NIL\n  Q = empty queue\n  ENQUEUE(Q, s)\n  while Q ≠ empty:\n    u = DEQUEUE(Q)\n    for each v in G.Adj[u]:\n      if v.color == WHITE:\n        v.color = GRAY\n        v.d = u.d + 1\n        v.π = u\n        ENQUEUE(Q, v)\n    u.color = BLACK",
-    "example": {
-      "input": "Graph with vertices {r,s,t,u,v,w,x,y}, source = s",
+      "input": "f(n) = 1/2n^2 - 3n",
       "steps": [
-        "Start: s.d=0, enqueue s",
-        "Process s: neighbors r,w → r.d=1, w.d=1",
-        "Process r: neighbors s(visited),v → v.d=2",
-        "Process w: neighbors s(v),t,x → t.d=2, x.d=2",
-        "Continue level by level..."
+        "To show f(n) = Theta(n^2), find c1, c2, n0 such that c1n^2 <= 1/2n^2 - 3n <= c2n^2.",
+        "Divide by n^2: c1 <= 1/2 - 3/n <= c2.",
+        "For the right side, c2 >= 1/2 works for n >= 1.",
+        "For the left side, 1/2 - 3/n >= c1. If n >= 7, then 1/2 - 3/7 = 1/14. So c1 = 1/14 works.",
+        "Thus, for n0 = 7, c1 = 1/14, and c2 = 1/2, the definition holds."
       ],
-      "output": "Shortest distances from s to all reachable vertices"
+      "output": "f(n) = Theta(n^2)"
     },
     "complexity": {
-      "time": { "best": "O(V+E)", "average": "O(V+E)", "worst": "O(V+E)" },
-      "space": "O(V)"
+      "time": {
+        "best": "N/A",
+        "average": "N/A",
+        "worst": "N/A"
+      },
+      "space": "N/A",
+      "recurrence": "N/A"
     },
-    "applications": ["Shortest path in unweighted graph", "Web crawlers", "Social network friend suggestions", "GPS navigation"],
-    "comparisons": {
-      "dfs": "BFS finds shortest paths (unweighted), DFS doesn't. BFS uses queue, DFS uses stack. DFS better for topological sort, cycle detection.",
-      "dijkstra": "BFS = shortest path for unweighted graphs. Dijkstra = shortest path for weighted graphs."
-    },
-    "clo_mapping": ["CLO-7"],
-    "related_topics": ["dfs", "dijkstra", "shortest-path", "graph-representation"]
-  },
-  {
-    "id": "dfs",
-    "name": "DFS (Depth-First Search)",
-    "aliases": ["dfs", "depth first search", "depth first", "backtracking search", "depth-first", "backtrack"],
-    "category": "graph",
-    "difficulty": "intermediate",
-    "definition": "DFS explores a graph by going as deep as possible along each branch before backtracking. It timestamps each vertex with discovery time d[v] and finish time f[v], useful for topological sort and SCC.",
-    "intuition": "Like exploring a maze — go as far as possible, when stuck backtrack, try another path. Use a stack (or recursion).",
-    "steps": [
-      "Initialize all vertices WHITE, predecessor NIL, time = 0",
-      "For each unvisited vertex u: call DFS-VISIT(u)",
-      "DFS-VISIT(u): color u GRAY, record discovery time d[u]",
-      "For each neighbor v of u: if v is WHITE, set v.π = u, recurse DFS-VISIT(v)",
-      "Color u BLACK, record finish time f[u]"
+    "proof_or_correctness": "Theorem 3.1: For any two functions f(n) and g(n), f(n) = Theta(g(n)) if and only if f(n) = O(g(n)) and f(n) = Omega(g(n)).",
+    "advantages": [
+      "Simplifies analysis by removing hardware-dependent constants.",
+      "Allows direct comparison of algorithm efficiency on large inputs."
     ],
-    "pseudocode": "DFS(G):\n  for each u in G.V: u.color=WHITE, u.π=NIL\n  time = 0\n  for each u in G.V:\n    if u.color == WHITE: DFS-VISIT(G, u)\n\nDFS-VISIT(G, u):\n  time = time + 1, u.d = time\n  u.color = GRAY\n  for each v in G.Adj[u]:\n    if v.color == WHITE:\n      v.π = u\n      DFS-VISIT(G, v)\n  u.color = BLACK\n  time = time + 1, u.f = time",
-    "example": {
-      "input": "Graph: u→v→y→x→u (cycle), u→x, v→w",
-      "output": "Discovery/finish times reveal tree edges, back edges (cycles), forward edges, cross edges"
-    },
-    "complexity": {
-      "time": { "best": "O(V+E)", "average": "O(V+E)", "worst": "O(V+E)" },
-      "space": "O(V)"
-    },
-    "edge_classification": {
-      "tree_edge": "Edge in DFS tree — v discovered from u",
-      "back_edge": "Edge u→v where v is ancestor of u — indicates cycle",
-      "forward_edge": "Edge u→v where v is descendant of u (DAGs only)",
-      "cross_edge": "All other edges"
-    },
-    "applications": ["Topological sorting", "Strongly Connected Components (Kosaraju/Tarjan)", "Cycle detection", "Maze solving"],
-    "comparisons": {
-      "bfs": "DFS uses O(V) stack space, BFS uses O(V) queue. DFS better for topological sort; BFS better for shortest paths."
-    },
-    "clo_mapping": ["CLO-7"],
-    "related_topics": ["bfs", "topological-sort", "strongly-connected-components", "cycle-detection"]
-  },
-  {
-    "id": "dijkstra",
-    "name": "Dijkstra's Algorithm",
-    "aliases": ["dijkstra", "dijkstras", "shortest path", "single source shortest path", "sssp", "weighted shortest path"],
-    "category": "graph",
-    "difficulty": "advanced",
-    "definition": "Dijkstra's Algorithm solves the single-source shortest paths problem on a weighted directed graph with non-negative edge weights. It greedily selects the nearest unvisited vertex and relaxes its edges.",
-    "intuition": "Always expand the unvisited vertex with the smallest known distance. Like GPS — always take the road that gets you to your destination most efficiently.",
-    "steps": [
-      "Initialize: d[s]=0, d[v]=∞ for all v≠s, π[v]=NIL",
-      "Add all vertices to min-priority queue Q",
-      "While Q is not empty: extract vertex u with minimum d[u]",
-      "Add u to set S (permanently settled)",
-      "For each neighbor v of u: RELAX(u, v, w)",
-      "RELAX: if d[u] + w(u,v) < d[v]: update d[v] = d[u] + w(u,v), π[v] = u"
+    "disadvantages": [
+      "Can be misleading for small input sizes where constants matter.",
+      "Abuse of equality notation (f(n) = O(g(n))) can be confusing for beginners."
     ],
-    "pseudocode": "DIJKSTRA(G, w, s):\n  INITIALIZE-SINGLE-SOURCE(G, s)\n  S = empty set\n  Q = MIN-PRIORITY-QUEUE(G.V)\n  while Q ≠ empty:\n    u = EXTRACT-MIN(Q)\n    S = S ∪ {u}\n    for each v in G.Adj[u]:\n      RELAX(u, v, w)\n\nRELAX(u, v, w):\n  if d[v] > d[u] + w(u,v):\n    d[v] = d[u] + w(u,v)\n    π[v] = u",
-    "example": {
-      "input": "Graph: s→t(10), s→y(5), t→y(2), t→x(1), y→t(3), y→x(9), y→z(2), x→z(4), z→x(6), z→s(7)",
-      "steps": [
-        "Init: d={s:0, t:∞, x:∞, y:∞, z:∞}",
-        "Extract s(0): relax t→10, y→5",
-        "Extract y(5): relax t→8, x→14, z→7",
-        "Extract z(7): relax x→13, s stays",
-        "Extract t(8): relax x→9",
-        "Extract x(9): done"
-      ],
-      "output": "d={s:0, t:8, x:9, y:5, z:7}"
-    },
-    "complexity": {
-      "time": { "array": "O(V²)", "binary_heap": "O((V+E) log V)", "fibonacci_heap": "O(E + V log V)" },
-      "space": "O(V)"
-    },
-    "correctness": "Proved by loop invariant: at start of each iteration, d[v] = δ(s,v) for all v in S",
-    "limitations": ["Does NOT work with negative edge weights", "Use Bellman-Ford for negative weights"],
     "comparisons": {
-      "bellman_ford": "Dijkstra: O((V+E)logV), no negative edges. Bellman-Ford: O(VE), handles negative edges.",
-      "bfs": "BFS: shortest path in unweighted graphs. Dijkstra: shortest path in weighted graphs with non-negative weights.",
-      "floyd_warshall": "Dijkstra: single-source O((V+E)logV). Floyd-Warshall: all-pairs O(V³)."
+      "big_o_vs_theta": "O-notation provides only an upper bound (tight or not), whereas Theta-notation requires the bound to be tight from both above and below."
     },
-    "clo_mapping": ["CLO-7"],
-    "related_topics": ["bellman-ford", "bfs", "minimum-spanning-tree", "relaxation", "priority-queue"]
+    "common_mistakes": [
+      "Stating 'The running time is at least O(n^2)', which is meaningless since O is an upper bound.",
+      "Assuming a Theta(n^2) worst-case time means the algorithm always runs in n^2 time (e.g., Insertion sort is Theta(n^2) worst-case but Theta(n) best-case)."
+    ],
+    "exam_questions": [
+      {
+        "question": "Formally define Theta-notation.",
+        "answer": "Theta(g(n)) = {f(n): there exist positive constants c1, c2, and n0 such that 0 <= c1g(n) <= f(n) <= c2g(n) for all n >= n0}."
+      },
+      {
+        "question": "Is 2^(n+1) = O(2^n)?",
+        "answer": "Yes, because 2^(n+1) = 2 * 2^n, and since 2 is a constant, we can choose c=2 and n0=1 to satisfy the definition."
+      },
+      {
+        "question": "Is 2^(2n) = O(2^n)?",
+        "answer": "No, because 2^(2n) = (2^2)^n = 4^n. There is no constant c such that 4^n <= c * 2^n for all sufficiently large n, as 2^n grows unbounded."
+      },
+      {
+        "question": "Define o-notation (little-oh).",
+        "answer": "o(g(n)) = {f(n): for any positive constant c > 0, there exists a constant n0 > 0 such that 0 <= f(n) < cg(n) for all n >= n0}."
+      },
+      {
+        "question": "Explain the difference between O and o.",
+        "answer": "In f(n) = O(g(n)), the bound holds for *some* constant c; in f(n) = o(g(n)), the bound must hold for *all* positive constants c."
+      },
+      {
+        "question": "Rank these by growth: n, lg n, n lg n, n^2, 2^n, n!.",
+        "answer": "lg n < n < n lg n < n^2 < 2^n < n!."
+      },
+      {
+        "question": "What is Euler's phi function phi(n)?",
+        "answer": "It is defined as the number of positive integers less than or equal to n that are relatively prime to n."
+      },
+      {
+        "question": "What is Stirling's approximation?",
+        "answer": "A formula used to approximate factorials: n! = sqrt(2*pi*n) * (n/e)^n * (1 + Theta(1/n))."
+      },
+      {
+        "question": "What is the iterated logarithm lg* n?",
+        "answer": "The number of times the logarithm function must be applied to n before the result is less than or equal to 1."
+      },
+      {
+        "question": "Does f(n) = O(g(n)) imply g(n) = O(f(n))?",
+        "answer": "No. For example, n = O(n^2) but n^2 is not O(n)."
+      }
+    ],
+    "related_topics": [
+      "role-analyzing-designing-algorithms",
+      "recurrences"
+    ]
   },
   {
     "id": "divide-and-conquer",
     "name": "Divide and Conquer",
-    "aliases": ["divide and conquer", "divide conquer", "divide & conquer", "d&c", "divide-and-conquer"],
-    "category": "algorithm design",
+    "aliases": [
+      "Divide-and-Conquer Paradigm"
+    ],
+    "category": "design",
     "difficulty": "intermediate",
-    "definition": "Divide and Conquer is an algorithm design paradigm that breaks a problem into smaller independent subproblems, solves them recursively, and combines their solutions. Running time expressed as recurrence T(n) = aT(n/b) + f(n).",
-    "intuition": "Split a big problem into smaller problems of the same type. Solve each small problem. Combine the small solutions.",
-    "three_steps": {
-      "divide": "Break the problem into smaller subproblems of the same type",
-      "conquer": "Solve subproblems recursively (base case: small enough to solve directly)",
-      "combine": "Merge subproblem solutions into the solution for the original problem"
-    },
-    "examples": [
-      "Merge Sort: divide array, sort halves, merge",
-      "Quick Sort: partition, sort partitions",
-      "Binary Search: check middle, recurse on half",
-      "Strassen Matrix Multiplication: divide matrices",
-      "Maximum Subarray Problem",
-      "Closest Pair of Points"
-    ],
+    "definition": "A design paradigm that involves three steps at each level of recursion: Divide the problem into subproblems that are smaller instances of the same problem; Conquer the subproblems by solving them recursively; Combine the subproblem solutions into the solution for the original problem.",
+    "intuition": "If a problem is too big to solve directly, break it into smaller identical pieces, solve those pieces, and glue the results back together.",
     "steps": [
-      "Identify base case (trivially solvable)",
-      "Define how to divide into subproblems",
-      "Write recursive calls",
-      "Define combine step",
-      "Write recurrence T(n) = aT(n/b) + f(n)",
-      "Solve recurrence with Master Theorem"
+      "Divide the n-element sequence to be sorted into two subsequences of n/2 elements each.",
+      "Conquer: Sort the two subsequences recursively using merge sort.",
+      "Combine: Merge the two sorted subsequences to produce the sorted answer."
     ],
-    "complexity": { "time": "Depends on a, b, f(n) — use Master Theorem", "space": "O(log n) to O(n) recursion stack" },
-    "comparisons": {
-      "dynamic_programming": "D&C: independent subproblems. DP: overlapping subproblems, store results.",
-      "greedy": "D&C solves subproblems optimally. Greedy makes single choices without looking back."
-    },
-    "clo_mapping": ["CLO-6"],
-    "related_topics": ["master-theorem", "merge-sort", "quick-sort", "binary-search", "recurrence-relations"]
-  },
-  {
-    "id": "bubble-sort",
-    "name": "Bubble Sort",
-    "aliases": ["bubble sort", "bubble", "sinking sort", "exchange sort"],
-    "category": "sorting",
-    "difficulty": "beginner",
-    "definition": "Bubble Sort repeatedly passes through the array, comparing adjacent elements and swapping them if out of order. After each pass, the largest unsorted element 'bubbles' to its correct position.",
-    "intuition": "Like bubbles rising in water — each pass makes the largest remaining element float to the top.",
-    "steps": [
-      "Outer loop: i from 0 to n-2",
-      "Inner loop: j from 0 to n-2-i",
-      "If A[j] > A[j+1]: swap them",
-      "After each outer iteration, A[n-1-i] is in its final position",
-      "Optimization: if no swap in a pass, array is sorted (break early)"
-    ],
-    "pseudocode": "BUBBLE-SORT(A):\n  for i = 0 to A.length - 2\n    for j = 0 to A.length - 2 - i\n      if A[j] > A[j+1]\n        swap A[j] with A[j+1]",
+    "pseudocode": "MERGE-SORT(A, p, r)\n1 if p < r\n2   q = floor((p + r) / 2)\n3   MERGE-SORT(A, p, q)\n4   MERGE-SORT(A, q + 1, r)\n5   MERGE(A, p, q, r)\n\nMERGE(A, p, q, r)\n1 n1 = q - p + 1\n2 n2 = r - q\n3 let L[1..n1 + 1] and R[1..n2 + 1] be new arrays\n4 for i = 1 to n1\n5   L[i] = A[p + i - 1]\n6 for j = 1 to n2\n7   R[j] = A[q + j]\n8 L[n1 + 1] = infinity\n9 R[n2 + 1] = infinity\n10 i = 1\n11 j = 1\n12 for k = p to r\n13   if L[i] <= R[j]\n14     A[k] = L[i]\n15     i = i + 1\n16   else A[k] = R[j]\n17     j = j + 1",
     "example": {
-      "input": "[5, 3, 8, 1, 2]",
-      "steps": ["Pass 1: [3,5,1,2,8]", "Pass 2: [3,1,2,5,8]", "Pass 3: [1,2,3,5,8]", "Pass 4: [1,2,3,5,8] (done)"],
-      "output": "[1, 2, 3, 5, 8]"
+      "input": "A = <5, 2, 4, 7, 1, 3, 2, 6>",
+      "steps": [
+        "Divide into <5, 2, 4, 7> and <1, 3, 2, 6>.",
+        "Recursively divide <5, 2, 4, 7> into <5, 2> and <4, 7>.",
+        "Sort/Merge <5, 2> to <2, 5>. Sort/Merge <4, 7> to <4, 7>.",
+        "Merge <2, 5> and <4, 7> to <2, 4, 5, 7>.",
+        "Perform same on right: Merge <1, 3> and <2, 6> to <1, 2, 3, 6>.",
+        "Final Merge of <2, 4, 5, 7> and <1, 2, 3, 6>."
+      ],
+      "output": "<1, 2, 2, 3, 4, 5, 6, 7>"
     },
     "complexity": {
-      "time": { "best": "O(n) — with early termination on sorted array", "average": "O(n²)", "worst": "O(n²)" },
-      "space": "O(1)"
+      "time": {
+        "best": "Theta(n lg n)",
+        "average": "Theta(n lg n)",
+        "worst": "Theta(n lg n)"
+      },
+      "space": "O(n) (Not in-place due to auxiliary arrays)",
+      "recurrence": "T(n) = 2T(n/2) + Theta(n)"
     },
-    "advantages": ["Simple to understand and implement", "Stable sort", "O(n) best case with optimization", "In-place"],
-    "disadvantages": ["O(n²) average and worst — very slow for large n", "Not used in practice"],
-    "clo_mapping": ["CLO-1", "CLO-2"],
-    "related_topics": ["insertion-sort", "selection-sort", "sorting-algorithms"]
-  },
-  {
-    "id": "selection-sort",
-    "name": "Selection Sort",
-    "aliases": ["selection sort", "selectionsort", "select sort"],
-    "category": "sorting",
-    "difficulty": "beginner",
-    "definition": "Selection Sort repeatedly finds the minimum element from the unsorted portion and places it at the beginning. It makes exactly n-1 swaps.",
-    "steps": [
-      "For i = 0 to n-2:",
-      "Find the minimum element in A[i..n-1]",
-      "Swap it with A[i]",
-      "Now A[0..i] is sorted"
+    "proof_or_correctness": "Loop Invariant for MERGE: At the start of each iteration of the loop of lines 12–17, the subarray A[p..k-1] contains the k-p smallest elements of L[1..n1+1] and R[1..n2+1], in sorted order. Also, L[i] and R[j] are the smallest elements of their arrays that have not been copied back into A.",
+    "advantages": [
+      "Guaranteed Theta(n lg n) performance.",
+      "Stable sorting algorithm.",
+      "Parallelizes well."
     ],
-    "pseudocode": "SELECTION-SORT(A):\n  for i = 0 to A.length - 2\n    min_idx = i\n    for j = i+1 to A.length - 1\n      if A[j] < A[min_idx]: min_idx = j\n    swap A[i] with A[min_idx]",
-    "example": { "input": "[64, 25, 12, 22, 11]", "steps": ["Find min=11, swap with 64 → [11,25,12,22,64]", "Find min=12 → [11,12,25,22,64]", "Find min=22 → [11,12,22,25,64]", "Done"], "output": "[11,12,22,25,64]" },
-    "complexity": { "time": { "best": "O(n²)", "average": "O(n²)", "worst": "O(n²)" }, "space": "O(1)" },
-    "advantages": ["Simple", "In-place O(1) space", "Exactly n-1 swaps (good when writes are costly)"],
-    "disadvantages": ["Always O(n²) — even on sorted array", "Not stable"],
-    "clo_mapping": ["CLO-1", "CLO-2"],
-    "related_topics": ["bubble-sort", "insertion-sort", "heap-sort"]
+    "disadvantages": [
+      "Requires O(n) auxiliary space.",
+      "Slower than insertion sort for very small n."
+    ],
+    "comparisons": {
+      "insertion_sort": "Divide and conquer (Merge sort) is asymptotically superior at Theta(n lg n) but requires more space than incremental (Insertion sort) which is Theta(n^2) but O(1) space."
+    },
+    "common_mistakes": [
+      "Forgetting the base case (p < r), leading to infinite recursion.",
+      "Calculating the midpoint q incorrectly, potentially causing infinite loops on n=2."
+    ],
+    "exam_questions": [
+      {
+        "question": "Identify the three steps of the divide-and-conquer paradigm.",
+        "answer": "Divide, Conquer, and Combine."
+      },
+      {
+        "question": "What is the 'bottoming out' point of Merge Sort?",
+        "answer": "When the sequence to be sorted has length 1, it is already sorted."
+      },
+      {
+        "question": "Write the recurrence for Merge Sort.",
+        "answer": "T(n) = 2T(n/2) + Theta(n) for n > 1; T(1) = Theta(1)."
+      },
+      {
+        "question": "How long does the MERGE procedure take?",
+        "answer": "Theta(n), where n = r - p + 1."
+      },
+      {
+        "question": "Explain the role of sentinels in the MERGE procedure.",
+        "answer": "Sentinels (infinity) at the end of L and R subarrays simplify the loop by avoiding the need to check if an array is empty in every iteration."
+      },
+      {
+        "question": "What is the height of the recursion tree for Merge Sort?",
+        "answer": "lg n + 1 levels."
+      },
+      {
+        "question": "Why is Merge Sort not 'in-place'?",
+        "answer": "It requires the creation of auxiliary arrays L and R to store the divided elements before merging them back."
+      },
+      {
+        "question": "Describe the maximum-subarray problem.",
+        "answer": "Finding the contiguous subarray within an array of numbers that has the largest sum."
+      },
+      {
+        "question": "How does Strassen's algorithm improve matrix multiplication?",
+        "answer": "It reduces the number of recursive multiplications from 8 to 7, resulting in a lower order of growth."
+      },
+      {
+        "question": "What is the complexity of Strassen's algorithm?",
+        "answer": "Theta(n^lg 7), approximately O(n^2.81)."
+      }
+    ],
+    "related_topics": [
+      "role-analyzing-designing-algorithms",
+      "recurrences"
+    ]
   },
   {
-    "id": "lower-bounds-sorting",
-    "name": "Lower Bounds for Sorting",
-    "aliases": ["lower bound sorting", "comparison lower bound", "omega n log n", "sorting lower bound", "decision tree"],
+    "id": "recurrences",
+    "name": "Recurrences",
+    "aliases": [
+      "Solving Recurrence Equations",
+      "Master Method"
+    ],
     "category": "complexity",
     "difficulty": "advanced",
-    "definition": "Any comparison-based sorting algorithm must make Ω(n log n) comparisons in the worst case. This is proven using decision trees — a model that captures all possible comparison sequences.",
-    "proof": {
-      "model": "Decision tree: binary tree where each internal node represents a comparison A[i] vs A[j], leaves are permutations",
-      "leaves": "Must have at least n! leaves (one per permutation of n elements)",
-      "height": "A binary tree with n! leaves has height ≥ log₂(n!) = Ω(n log n)",
-      "conclusion": "Worst case comparisons ≥ Ω(n log n)"
+    "definition": "A recurrence is an equation or inequality that describes a function in terms of its value on smaller inputs. They are used to characterize the running times of recursive algorithms.",
+    "intuition": "A mathematical way of keeping track of how work piles up as an algorithm repeatedly breaks a problem into smaller identical tasks.",
+    "steps": [
+      "Substitution Method: Guess the form of the solution and use mathematical induction to prove it and find constants.",
+      "Recursion-Tree Method: Draw a tree representing the cost of each level of recursion and sum the costs.",
+      "Master Method: Apply a pre-solved template for recurrences of the form T(n) = aT(n/b) + f(n)."
+    ],
+    "pseudocode": "N/A (Mathematical methods)",
+    "example": {
+      "input": "T(n) = 2T(n/2) + n",
+      "steps": [
+        "Using the Master Method: a=2, b=2, f(n)=n.",
+        "Calculate n^log_b(a) = n^log_2(2) = n^1 = n.",
+        "Compare f(n) = n with n^log_b(a) = n.",
+        "Case 2 applies: f(n) = Theta(n^log_b(a)).",
+        "Solution: T(n) = Theta(n^log_b(a) lg n) = Theta(n lg n)."
+      ],
+      "output": "T(n) = Theta(n lg n)"
     },
-    "why_counting_sort_beats_it": "Counting Sort, Radix Sort, and Bucket Sort are NOT comparison-based — they use integer properties to sort faster.",
-    "clo_mapping": ["CLO-4", "CLO-5"],
-    "related_topics": ["counting-sort", "radix-sort", "big-o-notation", "merge-sort"]
+    "complexity": {
+      "time": {
+        "best": "Method dependent",
+        "average": "Method dependent",
+        "worst": "Method dependent"
+      },
+      "space": "N/A",
+      "recurrence": "T(n) = aT(n/b) + f(n)"
+    },
+    "proof_or_correctness": "Master Theorem Proof Part: The total cost of the recursion tree sum is T(n) = Theta(n^log_b(a)) + sum_{j=0}^{log_b(n)-1} a^j f(n/b^j).",
+    "advantages": [
+      "Master Method provides a fast 'cookbook' solution for many common algorithms.",
+      "Recursion trees provide good visual intuition and guess generation."
+    ],
+    "disadvantages": [
+      "Master method has 'gaps' where no case applies (e.g., f(n) is not polynomially different).",
+      "Substitution method requires a good initial guess."
+    ],
+    "comparisons": {
+      "substitution_vs_tree": "Recursion trees are best for generating guesses, while the substitution method is used to prove them rigorously."
+    },
+    "common_mistakes": [
+      "Using O-notation for lower bounds in the Master method.",
+      "Ignoring the regularity condition in Master Theorem Case 3.",
+      "Failing the 'polynomially smaller/larger' test in the Master method."
+    ],
+    "exam_questions": [
+      {
+        "question": "State the three cases of the Master Theorem.",
+        "answer": "Let T(n) = aT(n/b) + f(n). 1. If f(n) = O(n^(log_b(a)-epsilon)) for some epsilon > 0, then T(n) = Theta(n^log_b(a)). 2. If f(n) = Theta(n^log_b(a)), then T(n) = Theta(n^log_b(a) lg n). 3. If f(n) = Omega(n^(log_b(a)+epsilon)) for some epsilon > 0 AND af(n/b) <= cf(n) for c < 1, then T(n) = Theta(f(n))."
+      },
+      {
+        "question": "Solve T(n) = 9T(n/3) + n using Master Method.",
+        "answer": "a=9, b=3, f(n)=n. n^log_3(9) = n^2. f(n) = n = O(n^(2-1)). Case 1 applies. T(n) = Theta(n^2)."
+      },
+      {
+        "question": "Solve T(n) = T(2n/3) + 1 using Master Method.",
+        "answer": "a=1, b=3/2, f(n)=1. n^log_{3/2}(1) = n^0 = 1. f(n) = 1 = Theta(1). Case 2 applies. T(n) = Theta(lg n)."
+      },
+      {
+        "question": "Solve T(n) = 3T(n/4) + n lg n using Master Method.",
+        "answer": "a=3, b=4, f(n)=n lg n. n^log_4(3) approx n^0.793. f(n) is polynomially larger. Case 3 applies. T(n) = Theta(n lg n)."
+      },
+      {
+        "question": "Why does the Master Method not apply to T(n) = 2T(n/2) + n lg n?",
+        "answer": "f(n) = n lg n is larger than n^log_2(2) = n, but it is not *polynomially* larger (the ratio is lg n, which is less than any n^epsilon)."
+      },
+      {
+        "question": "What is the 'regularity condition' in Master Theorem Case 3?",
+        "answer": "af(n/b) <= cf(n) for some constant c < 1 and all sufficiently large n."
+      },
+      {
+        "question": "What is the substitution method?",
+        "answer": "Guessing the form of the solution and then using mathematical induction to prove the guess correct and find the constants."
+      },
+      {
+        "question": "Explain the change-of-variables technique with T(n) = 2T(sqrt(n)) + lg n.",
+        "answer": "Let m = lg n. Then T(2^m) = 2T(2^(m/2)) + m. Let S(m) = T(2^m). S(m) = 2S(m/2) + m. S(m) = O(m lg m). Back-substituting, T(n) = O(lg n lg lg n)."
+      },
+      {
+        "question": "Show T(n) = T(n-1) + n is O(n^2).",
+        "answer": "The sum 1+2+...+n = n(n+1)/2 = Theta(n^2)."
+      },
+      {
+        "question": "What does a recursion tree vertex represent?",
+        "answer": "The cost of a single subproblem at that level of recursion."
+      }
+    ],
+    "related_topics": [
+      "growth-of-functions-asymptotic-notation",
+      "divide-and-conquer"
+    ]
   },
   {
-    "id": "minimum-spanning-tree",
-    "name": "Minimum Spanning Tree",
-    "aliases": ["minimum spanning tree", "mst", "kruskal", "prim", "spanning tree"],
+    "id": "heapsort-priority-queues",
+    "name": "Heapsort, Max-Heap, Min-Heap, and Priority Queues",
+    "aliases": [
+      "Binary Heaps",
+      "Heap Sorting"
+    ],
+    "category": "sorting",
+    "difficulty": "intermediate",
+    "definition": "Heapsort uses a binary heap data structure to sort an array. A heap is a nearly complete binary tree where the key at any node is either >= (max-heap) or <= (min-heap) the keys of its children.",
+    "intuition": "Think of a mountain of tasks where the most important (largest key) is always at the top. Once you finish the top task, the next most important one bubbles up to the peak.",
+    "steps": [
+      "BUILD-MAX-HEAP: Convert the input array into a max-heap in linear time.",
+      "Swap the root (maximum element) with the last element in the heap.",
+      "Reduce heap size by 1.",
+      "MAX-HEAPIFY: Restore the max-heap property at the new root.",
+      "Repeat until only one element remains."
+    ],
+    "pseudocode": "HEAPSORT(A)\n1 BUILD-MAX-HEAP(A)\n2 for i = A.length downto 2\n3   exchange A with A[i]\n4   A.heap-size = A.heap-size - 1\n5   MAX-HEAPIFY(A, 1)\n\nMAX-HEAPIFY(A, i)\n1 l = LEFT(i)\n2 r = RIGHT(i)\n3 if l <= A.heap-size and A[l] > A[i]\n4   largest = l\n5 else largest = i\n6 if r <= A.heap-size and A[r] > A[largest]\n7   largest = r\n8 if largest != i\n9   exchange A[i] with A[largest]\n10  MAX-HEAPIFY(A, largest)\n\nBUILD-MAX-HEAP(A)\n1 A.heap-size = A.length\n2 for i = floor(A.length / 2) downto 1\n3   MAX-HEAPIFY(A, i)",
+    "example": {
+      "input": "A = <4, 1, 3, 2, 16, 9, 10, 14, 8, 7>",
+      "steps": [
+        "BUILD-MAX-HEAP: <16, 14, 10, 8, 7, 9, 3, 2, 4, 1>.",
+        "Swap 16 and 1. Heap: <1, 14, 10, 8, 7, 9, 3, 2, 4>, Sorted: <16>.",
+        "MAX-HEAPIFY: <14, 8, 10, 4, 7, 9, 3, 2, 1>.",
+        "Swap 14 and 1. Heap: <1, 8, 10, 4, 7, 9, 3, 2>, Sorted: <14, 16>.",
+        "Continue until sorted: <1, 2, 3, 4, 7, 8, 9, 10, 14, 16>."
+      ],
+      "output": "<1, 2, 3, 4, 7, 8, 9, 10, 14, 16>"
+    },
+    "complexity": {
+      "time": {
+        "best": "O(n lg n)",
+        "average": "O(n lg n)",
+        "worst": "O(n lg n)"
+      },
+      "space": "O(1) (Sorts in-place)",
+      "recurrence": "MAX-HEAPIFY: T(n) <= T(2n/3) + Theta(1)"
+    },
+    "proof_or_correctness": "BUILD-MAX-HEAP Correctness: Use loop invariant: At the start of each iteration of the for loop of lines 2–3, each node i+1, i+2, ..., n is the root of a max-heap.",
+    "advantages": [
+      "Asymptotically optimal comparison sort.",
+      "Sorts in-place.",
+      "Useful for implementing priority queues."
+    ],
+    "disadvantages": [
+      "In practice, often outperformed by quicksort despite same worst-case.",
+      "Not a stable sort."
+    ],
+    "comparisons": {
+      "merge_sort": "Heapsort and Merge sort are both O(n lg n), but Heapsort is in-place whereas Merge sort requires O(n) auxiliary space."
+    },
+    "common_mistakes": [
+      "Incorrectly assuming BUILD-MAX-HEAP takes O(n lg n) instead of the tighter O(n).",
+      "Off-by-one errors in mapping tree indices (1-based vs 0-based)."
+    ],
+    "exam_questions": [
+      {
+        "question": "Define the max-heap property.",
+        "answer": "For every node i other than the root, A[PARENT(i)] >= A[i]."
+      },
+      {
+        "question": "Given index i, how do you find its parent and children?",
+        "answer": "PARENT(i) = floor(i/2), LEFT(i) = 2i, RIGHT(i) = 2i + 1."
+      },
+      {
+        "question": "What is the height of a heap with n elements?",
+        "answer": "floor(lg n)."
+      },
+      {
+        "question": "What is the running time of MAX-HEAPIFY?",
+        "answer": "O(h) or O(lg n), where h is the height of the node."
+      },
+      {
+        "question": "What is the tight bound for BUILD-MAX-HEAP?",
+        "answer": "O(n). This is because the work decreases as we move down the tree where most nodes reside."
+      },
+      {
+        "question": "What is a priority queue?",
+        "answer": "A data structure for maintaining a set S of elements, each with an associated value called a key, supporting operations like INSERT and EXTRACT-MAX/MIN."
+      },
+      {
+        "question": "How does HEAP-INCREASE-KEY work?",
+        "answer": "Update the key and then 'bubble up' the element by comparing it with its parent until the heap property is restored."
+      },
+      {
+        "question": "Why does HEAPSORT swap the root with the last element?",
+        "answer": "The root is the maximum; moving it to the end 'sorts' it, and we then shrink the heap to ignore that sorted portion."
+      },
+      {
+        "question": "Can a min-heap print keys in sorted order in O(n) time?",
+        "answer": "No. Extracting the minimum takes O(lg n), and doing it n times takes O(n lg n), which matches the lower bound for comparison sorting."
+      },
+      {
+        "question": "What is the purpose of the 'mark' attribute in Fibonacci heaps?",
+        "answer": "It tracks whether a node has lost a child since it was last made a child of another node, which is essential for the cascading cut in DECREASE-KEY."
+      }
+    ],
+    "related_topics": [
+      "quicksort-partitioning-analysis",
+      "sorting-linear-time"
+    ]
+  },
+  {
+    "id": "quicksort-partitioning-analysis",
+    "name": "Quicksort, Partitioning, and Analysis",
+    "aliases": [
+      "Randomized Quicksort",
+      "Hoare Partitioning"
+    ],
+    "category": "sorting",
+    "difficulty": "intermediate",
+    "definition": "Quicksort is a divide-and-conquer sorting algorithm that partitions an array around a pivot element such that elements smaller than the pivot are on the left and larger elements are on the right.",
+    "intuition": "Pick a target, separate everyone into 'shorter than target' and 'taller than target' groups, then repeat for each group.",
+    "steps": [
+      "Divide: Partition the array A[p..r] into two subarrays A[p..q-1] and A[q+1..r] around a pivot A[q].",
+      "Conquer: Sort the two subarrays by recursive calls to quicksort.",
+      "Combine: No work is needed as subarrays are sorted in-place."
+    ],
+    "pseudocode": "QUICKSORT(A, p, r)\n1 if p < r\n2   q = PARTITION(A, p, r)\n3   QUICKSORT(A, p, q - 1)\n4   QUICKSORT(A, q + 1, r)\n\nPARTITION(A, p, r)\n1 x = A[r]\n2 i = p - 1\n3 for j = p to r - 1\n4   if A[j] <= x\n5     i = i + 1\n6     exchange A[i] with A[j]\n7 exchange A[i + 1] with A[r]\n8 return i + 1",
+    "example": {
+      "input": "A = <2, 8, 7, 1, 3, 5, 6, 4>",
+      "steps": [
+        "PARTITION around pivot 4.",
+        "j=1: 2 <= 4, i=1, swap A,A. <2, 8, ...>",
+        "j=2: 8 > 4. j=3: 7 > 4.",
+        "j=4: 1 <= 4, i=2, swap A,A. <2, 1, 7, 8, ...>",
+        "j=5: 3 <= 4, i=3, swap A,A. <2, 1, 3, 8, 7, ...>",
+        "j=6,7: 5, 6 > 4. End loop.",
+        "Final swap A,A: <2, 1, 3, 4, 7, 5, 6, 8>.",
+        "Pivot 4 is at index 4."
+      ],
+      "output": "<2, 1, 3, 4, 7, 5, 6, 8>"
+    },
+    "complexity": {
+      "time": {
+        "best": "Theta(n lg n) (Balanced splits)",
+        "average": "Theta(n lg n)",
+        "worst": "Theta(n^2) (Already sorted or reverse sorted)"
+      },
+      "space": "O(lg n) (Logarithmic stack depth)",
+      "recurrence": "Worst: T(n) = T(n-1) + T(0) + Theta(n)"
+    },
+    "proof_or_correctness": "Loop Invariant for PARTITION: At the beginning of each iteration of the loop in lines 3–6, for any array index k: 1. If p <= k <= i, then A[k] <= x. 2. If i + 1 <= k <= j-1, then A[k] > x. 3. If k = r, then A[k] = x.",
+    "advantages": [
+      "Remarkably efficient on average with small constant factors.",
+      "Sorts in-place.",
+      "Works well in virtual-memory environments."
+    ],
+    "disadvantages": [
+      "Worst-case behavior is O(n^2).",
+      "Not a stable sort."
+    ],
+    "comparisons": {
+      "merge_sort": "Quicksort is in-place and generally faster in practice, but Merge sort provides a guaranteed Theta(n lg n) worst-case."
+    },
+    "common_mistakes": [
+      "Using a deterministic pivot on already sorted data, leading to O(n^2).",
+      "Improperly handling equal elements, which can lead to unbalanced partitions."
+    ],
+    "exam_questions": [
+      {
+        "question": "What is the worst-case partitioning for Quicksort?",
+        "answer": "When the partition routine produces one subproblem with n-1 elements and one with 0 elements."
+      },
+      {
+        "question": "How does randomized Quicksort work?",
+        "answer": "It selects a random element as the pivot, ensuring that no specific input always results in the worst-case performance."
+      },
+      {
+        "question": "What is the expected running time of randomized Quicksort?",
+        "answer": "O(n lg n)."
+      },
+      {
+        "question": "Explain 'tail recursion' in Quicksort.",
+        "answer": "An optimization where the second recursive call is replaced by a loop, reducing stack depth."
+      },
+      {
+        "question": "What happens to Quicksort's performance if all elements are equal?",
+        "answer": "The standard PARTITION returns q=r, leading to the worst-case O(n^2) behavior."
+      },
+      {
+        "question": "True or False: Any constant proportional split (e.g., 99-to-1) results in Theta(n lg n).",
+        "answer": "True. The recursion tree depth remains logarithmic."
+      },
+      {
+        "question": "What is the pivot in the text's PARTITION implementation?",
+        "answer": "The last element of the subarray, A[r]."
+      },
+      {
+        "question": "Why is the 'Combine' step empty in Quicksort?",
+        "answer": "Because the partitioning and recursive calls sort the elements in-place around the pivot; the entire array is sorted once recursion finishes."
+      },
+      {
+        "question": "How does stack depth relate to Quicksort?",
+        "answer": "In the worst case, it can be O(n). To ensure O(lg n), one should always recurse on the smaller partition first."
+      },
+      {
+        "question": "What is the probability of PARTITION producing a split more balanced than 1-alpha to alpha?",
+        "answer": "Approximately 1 - 2*alpha."
+      }
+    ],
+    "related_topics": [
+      "heapsort-priority-queues",
+      "sorting-linear-time"
+    ]
+  },
+  {
+    "id": "sorting-linear-time",
+    "name": "Sorting in Linear Time",
+    "aliases": [
+      "Non-comparison Sorts",
+      "Counting Sort",
+      "Radix Sort",
+      "Bucket Sort"
+    ],
+    "category": "sorting",
+    "difficulty": "advanced",
+    "definition": "Sorting algorithms that bypass the Omega(n lg n) lower bound of comparison sorts by making assumptions about the input (e.g., range of integers or distribution).",
+    "intuition": "If you know people's ages are between 0 and 100, you don't need to compare every person to every other person; just put them in 101 buckets and count them.",
+    "steps": [
+      "Counting Sort: Count occurrences of each value, calculate positions based on counts, and place elements into a new array.",
+      "Radix Sort: Sort elements digit by digit, from least significant to most significant, using a stable sort.",
+      "Bucket Sort: Distribute elements into buckets based on value, sort each bucket (e.g., using insertion sort), and concatenate results."
+    ],
+    "pseudocode": "COUNTING-SORT(A, B, k)\n1 let C[0..k] be a new array\n2 for i = 0 to k\n3   C[i] = 0\n4 for j = 1 to A.length\n5   C[A[j]] = C[A[j]] + 1\n6 // C[i] now contains the number of elements equal to i.\n7 for i = 1 to k\n8   C[i] = C[i] + C[i - 1]\n9 // C[i] now contains the number of elements less than or equal to i.\n10 for j = A.length downto 1\n11   B[C[A[j]]] = A[j]\n12   C[A[j]] = C[A[j]] - 1\n\nRADIX-SORT(A, d)\n1 for i = 1 to d\n2   use a stable sort to sort array A on digit i\n\nBUCKET-SORT(A)\n1 n = A.length\n2 let B[0..n - 1] be a new array\n3 for i = 0 to n - 1\n4   make B[i] an empty list\n5 for i = 1 to n\n6   insert A[i] into list B[floor(n * A[i])]\n7 for i = 0 to n - 1\n8   sort list B[i] with insertion sort\n9 concatenate the lists B, B, ..., B[n - 1] together in order",
+    "example": {
+      "input": "A = <2, 5, 3, 0, 2, 3, 0, 3>, k=5",
+      "steps": [
+        "Counting: C = <2, 0, 2, 3, 0, 1> (for values 0-5).",
+        "Prefix Sum: C = <2, 2, 4, 7, 7, 8>.",
+        "Placement (downto):",
+        "A=3 -> B[C=7]=3. C=6.",
+        "A=0 -> B[C=2]=0. C=1.",
+        "A=3 -> B[C=6]=3. C=5.",
+        "Continue until B = <0, 0, 2, 2, 3, 3, 3, 5>."
+      ],
+      "output": "<0, 0, 2, 2, 3, 3, 3, 5>"
+    },
+    "complexity": {
+      "time": {
+        "best": "Theta(n + k) (Counting Sort)",
+        "average": "Theta(n) (Bucket Sort with uniform distribution)",
+        "worst": "Theta(d(n + k)) (Radix Sort)"
+      },
+      "space": "O(n + k) (Counting Sort)",
+      "recurrence": "N/A"
+    },
+    "proof_or_correctness": "Lower Bound Proof: Any comparison sort can be modeled as a decision tree. A binary tree with n! leaves must have a height h >= lg(n!) = Omega(n lg n).",
+    "advantages": [
+      "Can beat the Omega(n lg n) limit for specific input types.",
+      "Counting sort is stable, making it a good subroutine for Radix sort."
+    ],
+    "disadvantages": [
+      "Radix sort requires stable sort subroutines.",
+      "Bucket sort performance degrades if data is not uniformly distributed.",
+      "Often requires significant extra memory."
+    ],
+    "comparisons": {
+      "quicksort": "Quicksort is a comparison sort limited to Omega(n lg n), while Counting sort can achieve Theta(n) if the range of keys k is O(n)."
+    },
+    "common_mistakes": [
+      "Using a non-stable sort as the digit-sorting subroutine in Radix sort.",
+      "Attempting to use Counting sort when the range of keys k is significantly larger than n."
+    ],
+    "exam_questions": [
+      {
+        "question": "What is the lower bound for any comparison-based sort?",
+        "answer": "Omega(n lg n)."
+      },
+      {
+        "question": "Explain 'stability' in sorting.",
+        "answer": "An algorithm is stable if it preserves the relative order of elements with equal keys."
+      },
+      {
+        "question": "Under what condition does Counting Sort run in O(n) time?",
+        "answer": "When the range of input values k is O(n)."
+      },
+      {
+        "question": "How does Radix Sort handle multi-digit numbers?",
+        "answer": "It sorts by the least significant digit first, progressing to the most significant digit, using a stable sort for each pass."
+      },
+      {
+        "question": "What input distribution is required for Bucket Sort to be linear?",
+        "answer": "The input must be uniformly distributed over the interval [0, 1)."
+      },
+      {
+        "question": "Prove that Counting Sort is stable.",
+        "answer": "Because the loop in lines 10-12 processes the input array in reverse order, it places the last occurring instance of a key in the latest available position in the output array, thus preserving relative order."
+      },
+      {
+        "question": "If we have n integers in the range 0 to n^3-1, how can we sort them in O(n) time?",
+        "answer": "Using Radix sort with base n. The number of digits d would be 3 (since n^3 in base n has 3 digits), and each pass of Counting sort would take O(n + n) = O(n), total O(3n) = O(n)."
+      },
+      {
+        "question": "What is a decision tree for sorting?",
+        "answer": "A full binary tree representing the comparisons performed by a sorting algorithm on a specific input size."
+      },
+      {
+        "question": "What is the worst-case time for Bucket Sort?",
+        "answer": "Theta(n^2), occurring when all elements fall into the same bucket."
+      },
+      {
+        "question": "Describe an algorithm to count elements in range [a..b] in O(1) time after O(n+k) preprocessing.",
+        "answer": "Perform the first 9 lines of Counting Sort. The answer is C[b] - C[a-1]."
+      }
+    ],
+    "related_topics": [
+      "heapsort-priority-queues",
+      "quicksort-partitioning-analysis"
+    ]
+  },
+  {
+    "id": "medians-and-order-statistics",
+    "name": "Medians and Order Statistics",
+    "aliases": [
+      "Selection Problem",
+      "Selection in Linear Time"
+    ],
+    "category": "searching",
+    "difficulty": "advanced",
+    "definition": "The i-th order statistic of a set of n elements is the i-th smallest element. The problem is to find this element given i and a set A.",
+    "intuition": "Finding the 'halfway point' (median) or any specific ranking without necessarily sorting the entire list first.",
+    "steps": [
+      "Divide the n elements into groups of 5.",
+      "Find the median of each group using insertion sort.",
+      "Find the median-of-medians x recursively.",
+      "Partition the array around x.",
+      "Recurse into the appropriate side based on the index of x."
+    ],
+    "pseudocode": "RANDOMIZED-SELECT(A, p, r, i)\n1 if p == r\n2   return A[p]\n3 q = RANDOMIZED-PARTITION(A, p, r)\n4 k = q - p + 1\n5 if i == k // the pivot value is the answer\n6   return A[q]\n7 elseif i < k\n8   return RANDOMIZED-SELECT(A, p, q - 1, i)\n9 else return RANDOMIZED-SELECT(A, q + 1, r, i - k)",
+    "example": {
+      "input": "A = <3, 2, 9, 0, 7, 5, 4, 8, 6>, i=5 (median)",
+      "steps": [
+        "Assume RANDOMIZED-PARTITION picks 5 as pivot (q=6, k=5).",
+        "i == k (5 == 5).",
+        "Return 5."
+      ],
+      "output": "5"
+    },
+    "complexity": {
+      "time": {
+        "best": "Theta(n)",
+        "average": "Theta(n) (Randomized Select)",
+        "worst": "Theta(n) (Deterministic Select)"
+      },
+      "space": "O(lg n) (Expected stack depth)",
+      "recurrence": "Worst: T(n) <= T(n/5) + T(7n/10 + 6) + O(n)"
+    },
+    "proof_or_correctness": "Substitution proof for E[T(n)] = O(n): Assume T(k) <= ck for k < n. Using indicator variables and expected values, show E[T(n)] <= cn.",
+    "advantages": [
+      "Faster than sorting (O(n) vs O(n lg n)).",
+      "Randomized version is very simple and efficient in practice."
+    ],
+    "disadvantages": [
+      "Deterministic version (median-of-medians) has high constant factors.",
+      "Randomized version has O(n^2) worst-case."
+    ],
+    "comparisons": {
+      "sorting": "Finding the median via sorting takes O(n lg n), while the selection algorithms in this chapter achieve O(n)."
+    },
+    "common_mistakes": [
+      "Off-by-one errors when calculating the rank k after partitioning.",
+      "Ignoring the case where i > k, requiring subtraction of k from i in the recursive call."
+    ],
+    "exam_questions": [
+      {
+        "question": "What is the first order statistic?",
+        "answer": "The minimum of the set."
+      },
+      {
+        "question": "What is the lower median of a set of size n?",
+        "answer": "The element with rank floor((n+1)/2)."
+      },
+      {
+        "question": "How many comparisons are required to find the minimum of n elements?",
+        "answer": "n - 1."
+      },
+      {
+        "question": "Describe how to find both the min and max using 3*floor(n/2) comparisons.",
+        "answer": "Process elements in pairs. Compare them to each other, then compare the smaller to the current min and the larger to the current max."
+      },
+      {
+        "question": "What is the recurrence for the SELECT algorithm (median-of-medians)?",
+        "answer": "T(n) <= T(ceil(n/5)) + T(7n/10 + 6) + O(n)."
+      },
+      {
+        "question": "Why is the group size 5 used in the SELECT algorithm?",
+        "answer": "Groups of 5 ensure that the recursive call is on at most 7n/10 + 6 elements, allowing the recurrence to solve to O(n)."
+      },
+      {
+        "question": "What is the expected running time of RANDOMIZED-SELECT?",
+        "answer": "O(n)."
+      },
+      {
+        "question": "Give an O(lg n) algorithm to find the median of two sorted arrays of length n.",
+        "answer": "Use a modified binary search to find an index in the first array such that the corresponding split in both arrays partitions 2n elements into two halves."
+      },
+      {
+        "question": "Can the worst-case of RANDOMIZED-SELECT be Omega(n^2)?",
+        "answer": "Yes, if the pivot always happens to be the smallest or largest element."
+      },
+      {
+        "question": "What are kth quantiles?",
+        "answer": "The k-1 order statistics that divide a sorted set into k equal-sized sets."
+      }
+    ],
+    "related_topics": [
+      "heapsort-priority-queues",
+      "quicksort-partitioning-analysis"
+    ]
+  },
+  {
+    "id": "binary-search-trees",
+    "name": "Binary Search Trees",
+    "aliases": [
+      "BST",
+      "Ordered Binary Trees"
+    ],
+    "category": "searching",
+    "difficulty": "intermediate",
+    "definition": "A binary tree data structure where each node satisfies the binary-search-tree property: for any node x, if y is in the left subtree, y.key <= x.key, and if y is in the right subtree, y.key >= x.key.",
+    "intuition": "Like a sorted library where at every shelf you know all books to the left come before the current one alphabetically, and all to the right come after.",
+    "steps": [
+      "Inorder Tree Walk: Recursively visit left subtree, print root, recursively visit right subtree.",
+      "Search: Compare key with root; if equal return, else recurse left if smaller or right if larger.",
+      "Insertion: Traverse tree like a search until a leaf position is found, then add new node.",
+      "Deletion: Replace node by its successor if it has two children; otherwise, splice it out and link parent to child."
+    ],
+    "pseudocode": "INORDER-TREE-WALK(x)\n1 if x != NIL\n2   INORDER-TREE-WALK(x.left)\n3   print x.key\n4   INORDER-TREE-WALK(x.right)\n\nTREE-SEARCH(x, k)\n1 if x == NIL or k == x.key\n2   return x\n3 if k < x.key\n4   return TREE-SEARCH(x.left, k)\n5 else return TREE-SEARCH(x.right, k)\n\nTREE-INSERT(T, z)\n1 y = NIL\n2 x = T.root\n3 while x != NIL\n4   y = x\n5   if z.key < x.key\n6     x = x.left\n7   else x = x.right\n8 z.p = y\n9 if y == NIL\n10  T.root = z // tree T was empty\n11 elseif z.key < y.key\n12  y.left = z\n13 else y.right = z",
+    "example": {
+      "input": "BST with keys {2, 3, 5, 5, 7, 8}",
+      "steps": [
+        "Inorder Tree Walk: Starts at root, follows left paths.",
+        "Output: 2, 3, 5, 5, 7, 8 (sorted order)."
+      ],
+      "output": "2, 3, 5, 5, 7, 8"
+    },
+    "complexity": {
+      "time": {
+        "best": "O(lg n) (Balanced tree)",
+        "average": "O(lg n)",
+        "worst": "O(h) where h is height (O(n) if skewed)"
+      },
+      "space": "O(n) (Storage of tree nodes)",
+      "recurrence": "Inorder Walk: T(n) = T(k) + T(n-k-1) + d"
+    },
+    "proof_or_correctness": "INORDER-TREE-WALK Proof: Uses induction. A tree of n nodes takes O(n) time as each node is visited once.",
+    "advantages": [
+      "Dynamic data structure (efficient insertion/deletion).",
+      "Supports range queries and sorted output easily.",
+      "Expected height of a randomly built BST is O(lg n)."
+    ],
+    "disadvantages": [
+      "Height can become O(n) in worst-case (skewed tree).",
+      "No inherent balancing mechanism."
+    ],
+    "comparisons": {
+      "min_heap": "BST property requires left < root < right, while min-heap property only requires root < children. BSTs allow printing in sorted order in O(n), heaps take O(n lg n)."
+    },
+    "common_mistakes": [
+      "Forgetting to update parent pointers during insertion or deletion.",
+      "Confusing the BST property with the heap property."
+    ],
+    "exam_questions": [
+      {
+        "question": "What is the running time of an inorder tree walk on n nodes?",
+        "answer": "Theta(n)."
+      },
+      {
+        "question": "How do you find the minimum in a BST?",
+        "answer": "Follow the left-child pointers from the root until you reach a NIL."
+      },
+      {
+        "question": "What is the successor of a node x in a BST?",
+        "answer": "If x has a right subtree, the minimum of that subtree. Otherwise, the lowest ancestor of x whose left child is also an ancestor of x."
+      },
+      {
+        "question": "What is the height of a randomly built BST on n keys?",
+        "answer": "O(lg n)."
+      },
+      {
+        "question": "Explain TRANSPLANT in BST deletion.",
+        "answer": "A subroutine that replaces one subtree as a child of its parent with another subtree."
+      },
+      {
+        "question": "What happens if you build a BST from a sorted list?",
+        "answer": "The tree becomes a linear chain with height n, leading to O(n) search time."
+      },
+      {
+        "question": "Can you implement search iteratively?",
+        "answer": "Yes, using a while loop to follow left or right pointers based on key comparison."
+      },
+      {
+        "question": "Is BST deletion commutative?",
+        "answer": "No. Deleting x then y may yield a different tree structure than deleting y then x."
+      },
+      {
+        "question": "What is a 'preorder' tree walk?",
+        "answer": "A traversal where the root is visited before its subtrees."
+      },
+      {
+        "question": "What is the difference between a randomly built BST and a randomly chosen BST?",
+        "answer": "Randomly built assumes all input permutations are likely; randomly chosen assumes all possible tree shapes are likely. They result in different distributions."
+      }
+    ],
+    "related_topics": [
+      "red-black-trees",
+      "medians-and-order-statistics"
+    ]
+  },
+  {
+    "id": "red-black-trees",
+    "name": "Red-Black Trees",
+    "aliases": [
+      "Self-Balancing Binary Search Trees",
+      "RBT"
+    ],
+    "category": "searching",
+    "difficulty": "advanced",
+    "definition": "A binary search tree with one extra bit of storage per node: its color (RED or BLACK). A red-black tree is approximately balanced, ensuring a height of O(lg n).",
+    "intuition": "Like a BST but with rules that force it to stay balanced, preventing it from ever becoming a long linear chain.",
+    "steps": [
+      "RB-INSERT: Insert like a BST, color the node red, and then call FIXUP.",
+      "Left/Right Rotation: Local operations to preserve BST property while changing tree structure for balance.",
+      "FIXUP (Insertion): Resolve cases of red-red violations by recoloring and rotating.",
+      "RB-DELETE: Delete like a BST and call FIXUP if a black node was removed to restore 'black-height'."
+    ],
+    "pseudocode": "LEFT-ROTATE(T, x)\n1 y = x.right // set y\n2 x.right = y.left // turn y's left subtree into x's right subtree\n3 if y.left != T.nil\n4   y.left.p = x\n5 y.p = x.p // link x's parent to y\n6 if x.p == T.nil\n7   T.root = y\n8 elseif x == x.p.left\n9   x.p.left = y\n10 else x.p.right = y\n11 y.left = x // put x on y's left\n12 x.p = y\n\nRB-INSERT(T, z)\n1 y = T.nil\n2 x = T.root\n3 while x != T.nil\n4   y = x\n5   if z.key < x.key\n6     x = x.left\n7   else x = x.right\n8 z.p = y\n9 if y == T.nil\n10  T.root = z\n11 elseif z.key < y.key\n12  y.left = z\n13 else y.right = z\n14 z.left = T.nil\n15 z.right = T.nil\n16 z.color = RED\n17 RB-INSERT-FIXUP(T, z)",
+    "example": {
+      "input": "Insert key 4 into an existing RBT.",
+      "steps": [
+        "Insert as red. If parent is also red, check uncle color.",
+        "Case 1: Uncle is red -> Recolor parent, uncle, and grandparent. Grandparent becomes new violation target.",
+        "Case 2: Uncle is black, triangle shape -> Rotate to make line shape (Case 3).",
+        "Case 3: Uncle is black, line shape -> Rotate grandparent and recolor."
+      ],
+      "output": "Balanced RBT including key 4."
+    },
+    "complexity": {
+      "time": {
+        "best": "O(lg n)",
+        "average": "O(lg n)",
+        "worst": "O(lg n)"
+      },
+      "space": "O(n)",
+      "recurrence": "N/A"
+    },
+    "proof_or_correctness": "Lemma 13.1: A red-black tree with n internal nodes has height at most 2 lg(n + 1). Proof uses induction on black-height.",
+    "advantages": [
+      "Worst-case O(lg n) for search, insert, and delete.",
+      "Guaranteed balance (within factor of 2)."
+    ],
+    "disadvantages": [
+      "Complex to implement compared to standard BST.",
+      "Constant factors are higher than randomized BSTs or skip lists."
+    ],
+    "comparisons": {
+      "binary_search_tree": "Standard BST height can be O(n); Red-Black trees guarantee O(lg n) height through specific color properties and rotations."
+    },
+    "common_mistakes": [
+      "Forgetting to handle the sentinel T.nil as the parent of the root.",
+      "Misidentifying cases in the FIXUP procedures, leading to infinite loops or balance violations."
+    ],
+    "exam_questions": [
+      {
+        "question": "What are the five Red-Black properties?",
+        "answer": "1. Every node is red or black. 2. The root is black. 3. Every leaf (NIL) is black. 4. If a node is red, both children are black. 5. For each node, all simple paths from the node to descendant leaves contain the same number of black nodes."
+      },
+      {
+        "question": "What is the maximum height of a Red-Black tree with n nodes?",
+        "answer": "2 lg(n + 1)."
+      },
+      {
+        "question": "What is 'black-height'?",
+        "answer": "The number of black nodes on any simple path from node x to a leaf, not counting node x itself."
+      },
+      {
+        "question": "Does a LEFT-ROTATE operation change the BST property?",
+        "answer": "No, it is designed to preserve the inorder relationship while changing the structure of the tree."
+      },
+      {
+        "question": "How many rotations are performed during RB-INSERT?",
+        "answer": "At most two."
+      },
+      {
+        "question": "How many rotations are performed during RB-DELETE?",
+        "answer": "At most three."
+      },
+      {
+        "question": "What color is a new node upon insertion?",
+        "answer": "RED."
+      },
+      {
+        "question": "What is an AVL tree?",
+        "answer": "A binary search tree that is height-balanced: for each node, the heights of left and right subtrees differ by at most 1."
+      },
+      {
+        "question": "What is a Treap?",
+        "answer": "A binary search tree where nodes have both keys (obeying BST property) and priorities (obeying heap property)."
+      },
+      {
+        "question": "What is an Order-Statistic Tree?",
+        "answer": "An augmented Red-Black tree that supports finding the i-th smallest element or the rank of an element in O(lg n)."
+      }
+    ],
+    "related_topics": [
+      "binary-search-trees",
+      "dynamic-programming"
+    ]
+  },
+  {
+    "id": "minimum-spanning-trees",
+    "name": "Minimum Spanning Trees",
+    "aliases": [
+      "MST",
+      "Kruskal's Algorithm",
+      "Prim's Algorithm"
+    ],
     "category": "graph",
     "difficulty": "advanced",
-    "definition": "A Minimum Spanning Tree of a connected weighted undirected graph is a spanning tree whose total edge weight is minimized. Kruskal's and Prim's algorithms both find MST greedily.",
-    "algorithms": {
-      "kruskal": {
-        "approach": "Edge-based greedy. Sort all edges by weight. Add edge if it doesn't create a cycle (use Union-Find).",
-        "complexity": "O(E log E) = O(E log V)",
-        "pseudocode": "Sort edges by weight\nFor each edge (u,v) in sorted order:\n  if FIND(u) ≠ FIND(v): add to MST, UNION(u,v)"
-      },
-      "prim": {
-        "approach": "Vertex-based greedy. Grow MST one vertex at a time. Always add cheapest edge connecting tree to non-tree vertex.",
-        "complexity": "O(E log V) with binary heap",
-        "pseudocode": "Initialize key[s]=0, key[v]=∞ for others\nWhile not all vertices in MST:\n  u = vertex with minimum key not in MST\n  For each neighbor v: if w(u,v) < key[v]: update key[v]"
-      }
+    "definition": "For a connected, undirected graph G = (V, E) with a weight function w, find an acyclic subset of edges T that connects all vertices and whose total weight is minimized.",
+    "intuition": "Connecting a group of cities with roads using the least amount of asphalt possible.",
+    "steps": [
+      "Generic MST: Start with an empty set of edges and repeatedly add 'safe' edges that do not form a cycle and maintain the MST property.",
+      "Kruskal's Algorithm: Sort edges by weight and add them if they connect two different components (using Disjoint-Set).",
+      "Prim's Algorithm: Grow a single tree from an arbitrary root, always adding the minimum weight edge connecting a tree vertex to a non-tree vertex (using Priority Queue)."
+    ],
+    "pseudocode": "MST-KRUSKAL(G, w)\n1 A = empty set\n2 for each vertex v in G.V\n3   MAKE-SET(v)\n4 sort the edges of G.E into nondecreasing order by weight w\n5 for each edge (u, v) in G.E, taken in nondecreasing order by weight\n6   if FIND-SET(u) != FIND-SET(v)\n7     A = A union {(u, v)}\n8     UNION(u, v)\n9 return A\n\nMST-PRIM(G, w, r)\n1 for each u in G.V\n2   u.key = infinity\n3   u.pi = NIL\n4 r.key = 0\n5 Q = G.V\n6 while Q != empty set\n7   u = EXTRACT-MIN(Q)\n8   for each v in G.Adj[u]\n9     if v is in Q and w(u, v) < v.key\n10      v.pi = u\n11      v.key = w(u, v)",
+    "example": {
+      "input": "Graph with vertices {a..i} and weights like (a,b)=4, (b,c)=8, (a,h)=8...",
+      "steps": [
+        "Kruskal: Sort edges. (g,h) weight 1 is first. Add to MST. (c,i) weight 2 is next. Add to MST... Continue until all vertices connected.",
+        "Prim: Start at vertex 'a'. Neighbors are b(4), h(8). Pick 'b'. Neighbors of {a,b} are c(8), h(11), h(8). Pick 'h'... Continue adding lightest edge to current tree."
+      ],
+      "output": "Total weight 37"
     },
-    "cut_property": "For any cut (S, V-S), the minimum weight edge crossing the cut belongs to some MST",
-    "complexity": { "kruskal": "O(E log V)", "prim_binary_heap": "O(E log V)", "prim_fibonacci_heap": "O(E + V log V)" },
-    "clo_mapping": ["CLO-7"],
-    "related_topics": ["greedy-algorithms", "dijkstra", "union-find", "graph-algorithms"]
+    "complexity": {
+      "time": {
+        "best": "O(E lg V)",
+        "average": "O(E lg V)",
+        "worst": "O(E lg V) (Kruskal) or O(E + V lg V) (Prim with Fibonacci Heap)"
+      },
+      "space": "O(V + E)",
+      "recurrence": "N/A"
+    },
+    "proof_or_correctness": "Cut Property: Let (S, V-S) be any cut of G that respects A, and let (u, v) be a light edge crossing the cut. Then (u, v) is safe for A.",
+    "advantages": [
+      "Greedy strategy works perfectly for this problem.",
+      "Efficient algorithms for large graphs."
+    ],
+    "disadvantages": [
+      "Requires connected graph to find a spanning tree.",
+      "Prim's algorithm depends heavily on priority queue efficiency."
+    ],
+    "comparisons": {
+      "kruskal_vs_prim": "Kruskal is better for sparse graphs and uses Disjoint-Sets; Prim is better for dense graphs and uses Priority Queues."
+    },
+    "common_mistakes": [
+      "Using MST algorithms on directed graphs (it's for undirected).",
+      "Forming cycles in Kruskal's if Disjoint-Set check is missing."
+    ],
+    "exam_questions": [
+      {
+        "question": "What is a 'spanning tree'?",
+        "answer": "A subset of edges from a connected graph that forms a tree and includes all vertices."
+      },
+      {
+        "question": "What is a 'safe edge'?",
+        "answer": "An edge (u, v) that can be added to a subset of edges A such that A union {(u, v)} is also a subset of some MST."
+      },
+      {
+        "question": "Define a 'cut' in a graph.",
+        "answer": "A partition of the vertex set V into two sets S and V-S."
+      },
+      {
+        "question": "When does a cut 'respect' a set of edges A?",
+        "answer": "If no edge in A crosses the cut."
+      },
+      {
+        "question": "What is the running time of Kruskal's using path compression and union by rank?",
+        "answer": "O(E lg E) or O(E lg V)."
+      },
+      {
+        "question": "What is the running time of Prim's using a binary heap?",
+        "answer": "O(E lg V)."
+      },
+      {
+        "question": "What data structure is used to improve Prim's to O(E + V lg V)?",
+        "answer": "Fibonacci Heap."
+      },
+      {
+        "question": "Is an MST unique?",
+        "answer": "Not necessarily. If edge weights are not distinct, there can be multiple MSTs."
+      },
+      {
+        "question": "Explain the role of FIND-SET in Kruskal's.",
+        "answer": "It determines which connected component a vertex belongs to, preventing the addition of edges that would form cycles."
+      },
+      {
+        "question": "What is the 'light-edge' property?",
+        "answer": "A light edge is any edge crossing a cut with the minimum weight among all edges crossing that cut."
+      }
+    ],
+    "related_topics": [
+      "graph-algorithms-representations",
+      "shortest-paths"
+    ]
+  },
+  {
+    "id": "dynamic-programming",
+    "name": "Dynamic Programming",
+    "aliases": [
+      "DP",
+      "Tabulation",
+      "Memoization"
+    ],
+    "category": "dynamic programming",
+    "difficulty": "advanced",
+    "definition": "A design technique that solves problems by combining the solutions to subproblems. It applies when subproblems overlap—that is, when subproblems share subsubproblems.",
+    "intuition": "Instead of solving the same puzzle piece over and over, you solve it once and write the answer down on a table for later.",
+    "steps": [
+      "Characterize the structure of an optimal solution.",
+      "Recursively define the value of an optimal solution.",
+      "Compute the value of an optimal solution, typically in a bottom-up fashion.",
+      "Construct an optimal solution from computed information."
+    ],
+    "pseudocode": "BOTTOM-UP-CUT-ROD(p, n)\n1 let r[0..n] be a new array\n2 r = 0\n3 for j = 1 to n\n4   q = -1\n5   for i = 1 to j\n6     q = max(q, p[i] + r[j - i])\n7   r[j] = q\n8 return r[n]\n\nMATRIX-CHAIN-ORDER(p)\n1 n = p.length - 1\n2 let m[1..n, 1..n] and s[1..n - 1, 2..n] be new tables\n3 for i = 1 to n\n4   m[i, i] = 0\n5 for l = 2 to n // l is the chain length\n6   for i = 1 to n - l + 1\n7     j = i + l - 1\n8     m[i, j] = infinity\n9     for k = i to j - 1\n10      q = m[i, k] + m[k + 1, j] + p[i-1]*p[k]*p[j]\n11      if q < m[i, j]\n12        m[i, j] = q\n13        s[i, j] = k\n14 return m and s",
+    "example": {
+      "input": "Rod length n=4, prices p=<1, 5, 8, 9>",
+      "steps": [
+        "r = 0.",
+        "j=1: r = max(p+r) = 1.",
+        "j=2: r = max(p+r, p+r) = max(1+1, 5+0) = 5.",
+        "j=3: r = max(p+r, p+r, p+r) = max(1+5, 5+1, 8+0) = 8.",
+        "j=4: r = max(p+r, p+r, p+r, p+r) = max(1+8, 5+5, 8+1, 9+0) = 10."
+      ],
+      "output": "10"
+    },
+    "complexity": {
+      "time": {
+        "best": "Theta(n^2) (Rod Cutting)",
+        "average": "Theta(n^2)",
+        "worst": "Theta(n^2)"
+      },
+      "space": "O(n) (Storage for table)",
+      "recurrence": "r_n = max_{1<=i<=n} (p_i + r_{n-i})"
+    },
+    "proof_or_correctness": "Optimal Substructure: An optimal solution to a problem contains within it optimal solutions to subproblems. This is proven using the 'cut-and-paste' technique.",
+    "advantages": [
+      "Transforms exponential-time recursive solutions into polynomial-time.",
+      "Avoids redundant calculations via memoization or tabulation."
+    ],
+    "disadvantages": [
+      "Can require significant memory to store subproblem results.",
+      "Requires the problem to have overlapping subproblems and optimal substructure."
+    ],
+    "comparisons": {
+      "divide_and_conquer": "Divide-and-conquer partitions problems into disjoint subproblems, while DP is used when subproblems overlap.",
+      "greedy": "Greedy algorithms make a locally optimal choice at each step, while DP explores all choices and solves subproblems to find a global optimum."
+    },
+    "common_mistakes": [
+      "Failing to recognize overlapping subproblems, leading to exponential recursion.",
+      "Inability to define a state that captures the necessary subproblem information."
+    ],
+    "exam_questions": [
+      {
+        "question": "What is 'memoization'?",
+        "answer": "A top-down strategy where a recursive algorithm is modified to save and look up subproblem solutions in a table."
+      },
+      {
+        "question": "What are the two key ingredients for dynamic programming?",
+        "answer": "Optimal substructure and overlapping subproblems."
+      },
+      {
+        "question": "Explain the 'cut-and-paste' argument.",
+        "answer": "A proof technique where you assume a subproblem solution is not optimal, then show that 'pasting' an optimal one would improve the overall solution, contradicting its original optimality."
+      },
+      {
+        "question": "How does the subproblem graph help in analysis?",
+        "answer": "It helps determine the number of subproblems (vertices) and the number of choices per subproblem (out-degree), which together determine the running time."
+      },
+      {
+        "question": "Compare bottom-up vs top-down DP.",
+        "answer": "Bottom-up solves subproblems in size order and has better constant factors (no recursion overhead); top-down with memoization only solves necessary subproblems."
+      },
+      {
+        "question": "What is the complexity of the Matrix-Chain Multiplication problem for n matrices?",
+        "answer": "Theta(n^3)."
+      },
+      {
+        "question": "Define 'Longest Common Subsequence' (LCS).",
+        "answer": "Finding the longest sequence that is a subsequence of two given sequences."
+      },
+      {
+        "question": "What is the complexity of finding an LCS of sequences of length m and n?",
+        "answer": "Theta(mn)."
+      },
+      {
+        "question": "What is an 'Optimal Binary Search Tree'?",
+        "answer": "A BST constructed based on known search frequencies of keys to minimize the expected search cost."
+      },
+      {
+        "question": "Explain how DP applies to the Edit Distance problem.",
+        "answer": "The edit distance from prefix X_i to Y_j depends on the distances of smaller prefixes (i-1, j), (i, j-1), and (i-1, j-1), representing delete, insert, and copy/replace operations."
+      }
+    ],
+    "related_topics": [
+      "greedy-algorithms",
+      "recurrences"
+    ]
+  },
+  {
+    "id": "greedy-algorithms",
+    "name": "Greedy Algorithms",
+    "aliases": [
+      "Greedy Strategy",
+      "Huffman Coding"
+    ],
+    "category": "greedy",
+    "difficulty": "intermediate",
+    "definition": "A greedy algorithm always makes the choice that looks best at the moment, making a locally optimal choice in the hope that this choice will lead to a globally optimal solution.",
+    "intuition": "Eating the biggest piece of cake now, without worrying about whether it leaves you the best pieces for later.",
+    "steps": [
+      "Determine the optimal substructure of the problem.",
+      "Develop a recursive solution.",
+      "Show that if we make the greedy choice, then only one subproblem remains.",
+      "Prove that it is always safe to make the greedy choice (Greedy-choice property).",
+      "Implement the strategy iteratively."
+    ],
+    "pseudocode": "GREEDY-ACTIVITY-SELECTOR(s, f)\n1 n = s.length\n2 A = {a1}\n3 k = 1\n4 for m = 2 to n\n5   if s[m] >= f[k]\n6     A = A union {am}\n7     k = m\n8 return A\n\nHUFFMAN(C)\n1 n = |C|\n2 Q = C\n3 for i = 1 to n - 1\n4   allocate a new node z\n5   z.left = x = EXTRACT-MIN(Q)\n6   z.right = y = EXTRACT-MIN(Q)\n7   z.freq = x.freq + y.freq\n8   INSERT(Q, z)\n9 return EXTRACT-MIN(Q) // return the root of the tree",
+    "example": {
+      "input": "Activities (start, finish): (1,4), (3,5), (0,6), (5,7), (3,9), (5,9), (6,10), (8,11), (8,12), (2,14), (12,16)",
+      "steps": [
+        "Pick first activity to finish: (1,4).",
+        "Next activity that starts after 4 finishes: (5,7).",
+        "Next activity that starts after 7 finishes: (8,11).",
+        "Next activity that starts after 11 finishes: (12,16)."
+      ],
+      "output": "Selected activities: {(1,4), (5,7), (8,11), (12,16)}"
+    },
+    "complexity": {
+      "time": {
+        "best": "Theta(n) (Activity Selection if sorted)",
+        "average": "O(n lg n) (Huffman Coding)",
+        "worst": "O(n lg n)"
+      },
+      "space": "O(n)",
+      "recurrence": "N/A"
+    },
+    "proof_or_correctness": "Greedy-Choice Property: We can assemble a globally optimal solution by making locally optimal (greedy) choices.",
+    "advantages": [
+      "Usually faster and simpler than dynamic programming.",
+      "Efficient for many graph and compression problems."
+    ],
+    "disadvantages": [
+      "Does not always yield an optimal solution.",
+      "Proving correctness can be difficult."
+    ],
+    "comparisons": {
+      "dynamic_programming": "Greedy algorithms make a choice and then solve the subproblem; DP solves all subproblems and then makes a choice.",
+      "fractional_vs_01_knapsack": "The greedy strategy works for the fractional knapsack problem but fails for the 0-1 knapsack problem, which requires DP."
+    },
+    "common_mistakes": [
+      "Applying a greedy approach to a problem that does not have the greedy-choice property (e.g., 0-1 Knapsack).",
+      "Incorrectly sorting the input before applying the greedy choice."
+    ],
+    "exam_questions": [
+      {
+        "question": "What is the 'greedy-choice property'?",
+        "answer": "The property that a globally optimal solution can be arrived at by making locally optimal choices."
+      },
+      {
+        "question": "How do you prove a greedy algorithm is correct?",
+        "answer": "Typically by showing that the greedy choice is always part of some optimal solution (exchange argument) and that the problem has optimal substructure."
+      },
+      {
+        "question": "What is an 'Activity-Selection Problem'?",
+        "answer": "Selecting the maximum number of mutually compatible activities from a set of proposed activities."
+      },
+      {
+        "question": "Explain Huffman Coding.",
+        "answer": "A greedy algorithm used for data compression that assigns variable-length bit strings to characters based on their frequencies."
+      },
+      {
+        "question": "What is a 'prefix code'?",
+        "answer": "A code in which no codeword is also a prefix of some other codeword."
+      },
+      {
+        "question": "What is the complexity of constructing a Huffman tree?",
+        "answer": "O(n lg n), where n is the number of characters."
+      },
+      {
+        "question": "What are matroids?",
+        "answer": "A combinatorial structure for which a greedy algorithm always produces an optimal solution."
+      },
+      {
+        "question": "Can the 0-1 knapsack problem be solved greedily?",
+        "answer": "No. The 0-1 knapsack problem requires dynamic programming to ensure optimality."
+      },
+      {
+        "question": "Explain the difference between fractional and 0-1 knapsack.",
+        "answer": "In fractional knapsack, you can take portions of items; in 0-1 knapsack, you must take an item entirely or not at all."
+      },
+      {
+        "question": "How do you minimize average completion time for a set of tasks?",
+        "answer": "By scheduling tasks in nondecreasing order of their processing times."
+      }
+    ],
+    "related_topics": [
+      "dynamic-programming",
+      "minimum-spanning-trees"
+    ]
+  },
+  {
+    "id": "graph-algorithms-representations",
+    "name": "Graph Algorithms: Representations, BFS, DFS, and Topological Sort",
+    "aliases": [
+      "Elementary Graph Algorithms",
+      "Breadth-First Search",
+      "Depth-First Search"
+    ],
+    "category": "graph",
+    "difficulty": "intermediate",
+    "definition": "Methods for representing graphs (Adjacency Lists/Matrices) and searching them. BFS explores nodes layer by layer; DFS explores as deep as possible along each branch before backtracking.",
+    "intuition": "BFS is like a ripple in a pond spreading out from a center; DFS is like wandering through a maze, going deep until you hit a wall, then turning back.",
+    "steps": [
+      "BFS: Initialize colors/distances, use a Queue to visit vertices layer by layer.",
+      "DFS: Use recursion (or stack) and timestamps to explore every edge and vertex.",
+      "Topological Sort: Perform DFS and output vertices in decreasing order of finish time."
+    ],
+    "pseudocode": "BFS(G, s)\n1 for each vertex u in G.V - {s}\n2   u.color = WHITE, u.d = infinity, u.pi = NIL\n3 s.color = GRAY, s.d = 0, s.pi = NIL\n4 Q = empty set\n5 ENQUEUE(Q, s)\n6 while Q != empty set\n7   u = DEQUEUE(Q)\n8   for each v in G.Adj[u]\n9     if v.color == WHITE\n10      v.color = GRAY, v.d = u.d + 1, v.pi = u\n11      ENQUEUE(Q, v)\n12  u.color = BLACK\n\nDFS(G)\n1 for each vertex u in G.V\n2   u.color = WHITE, u.pi = NIL\n3 time = 0\n4 for each vertex u in G.V\n5   if u.color == WHITE\n6     DFS-VISIT(G, u)\n\nDFS-VISIT(G, u)\n1 time = time + 1, u.d = time, u.color = GRAY\n2 for each v in G.Adj[u]\n3   if v.color == WHITE\n4     v.pi = u, DFS-VISIT(G, v)\n5 u.color = BLACK, time = time + 1, u.f = time",
+    "example": {
+      "input": "Directed Graph G with vertices {u, v, w, x, y, z}",
+      "steps": [
+        "DFS from u: u.d=1. Neighbors v, x.",
+        "v.d=2. Neighbor y. y.d=3. Neighbor x. x already gray?",
+        "No, x is white. x.d=4. Neighbor v already gray.",
+        "x.f=5, y.f=6, v.f=7, u.f=8.",
+        "Finish other nodes w, z."
+      ],
+      "output": "DFS timestamps for each vertex."
+    },
+    "complexity": {
+      "time": {
+        "best": "Theta(V + E)",
+        "average": "Theta(V + E)",
+        "worst": "Theta(V + E)"
+      },
+      "space": "O(V) (Colors/distances/stack)",
+      "recurrence": "N/A"
+    },
+    "proof_or_correctness": "Parenthesis Theorem: In any DFS of a graph, for any two vertices u and v, either the intervals [u.d, u.f] and [v.d, v.f] are entirely disjoint, or one is entirely contained within the other.",
+    "advantages": [
+      "BFS finds the shortest path in unweighted graphs.",
+      "DFS provides foundation for topological sort and strongly connected components."
+    ],
+    "disadvantages": [
+      "Adjacency matrices are inefficient for sparse graphs (O(V^2) space).",
+      "BFS can consume large amounts of memory to store the Queue."
+    ],
+    "comparisons": {
+      "bfs_vs_dfs": "BFS uses a Queue and visits level-by-level; DFS uses recursion (Stack) and visits depth-first."
+    },
+    "common_mistakes": [
+      "Failing to reset vertex attributes (colors/distances) between different graph searches.",
+      "Not checking for self-loops or multiple edges in representation."
+    ],
+    "exam_questions": [
+      {
+        "question": "When is an adjacency matrix preferred over adjacency lists?",
+        "answer": "When the graph is dense (|E| is close to |V|^2) or when you need to check if an edge exists between two vertices in O(1) time."
+      },
+      {
+        "question": "What property of a graph does BFS find?",
+        "answer": "The shortest path (minimum number of edges) from a source vertex s to all reachable vertices."
+      },
+      {
+        "question": "Define 'Topological Sort'.",
+        "answer": "A linear ordering of vertices in a directed acyclic graph (dag) such that for every directed edge (u, v), u comes before v."
+      },
+      {
+        "question": "What are the four types of edges in a DFS?",
+        "answer": "Tree edges, Back edges, Forward edges, and Cross edges."
+      },
+      {
+        "question": "How do you detect a cycle in a directed graph using DFS?",
+        "answer": "A directed graph is acyclic if and only if a DFS yields no back edges."
+      },
+      {
+        "question": "What is the running time of Topological Sort?",
+        "answer": "Theta(V + E), since it is essentially a DFS with extra constant-time work per vertex."
+      },
+      {
+        "question": "What is a 'Strongly Connected Component' (SCC)?",
+        "answer": "A maximal set of vertices C such that for every pair of vertices u, v in C, both u and v are reachable from each other."
+      },
+      {
+        "question": "How do you find SCCs?",
+        "answer": "1. DFS(G) to find finish times. 2. Compute G^T (transpose). 3. DFS(G^T) in order of decreasing finish times."
+      },
+      {
+        "question": "What is a 'Breadth-First Tree'?",
+        "answer": "The tree formed by the predecessor pointers pi generated during a BFS starting from source s."
+      },
+      {
+        "question": "Explain 'Transpose' of a graph.",
+        "answer": "A graph G^T with the same vertices but all edges reversed relative to G."
+      }
+    ],
+    "related_topics": [
+      "minimum-spanning-trees",
+      "shortest-paths"
+    ]
+  },
+  {
+    "id": "shortest-paths",
+    "name": "Shortest Paths: Bellman-Ford, Dijkstra, and DAGs",
+    "aliases": [
+      "Single-Source Shortest Paths",
+      "Dijkstra's Algorithm",
+      "Bellman-Ford Algorithm"
+    ],
+    "category": "graph",
+    "difficulty": "advanced",
+    "definition": "Finding the path with minimum total weight between a source vertex and other vertices in a weighted graph.",
+    "intuition": "Finding the cheapest flight route between cities when tickets have different prices.",
+    "steps": [
+      "INITIALIZE-SINGLE-SOURCE: Set distances to infinity and predecessors to NIL.",
+      "RELAX: Update the shortest path estimate to a vertex if a shorter path is found via an edge.",
+      "Bellman-Ford: Repeatedly relax all edges |V|-1 times to handle negative weights.",
+      "Dijkstra's Algorithm: Greedily pick the vertex with the smallest current distance and relax its neighbors (nonnegative weights only)."
+    ],
+    "pseudocode": "RELAX(u, v, w)\n1 if v.d > u.d + w(u, v)\n2   v.d = u.d + w(u, v)\n3   v.pi = u\n\nBELLMAN-FORD(G, w, s)\n1 INITIALIZE-SINGLE-SOURCE(G, s)\n2 for i = 1 to |G.V| - 1\n3   for each edge (u, v) in G.E\n4     RELAX(u, v, w)\n5 for each edge (u, v) in G.E\n6   if v.d > u.d + w(u, v)\n7     return FALSE\n8 return TRUE\n\nDIJKSTRA(G, w, s)\n1 INITIALIZE-SINGLE-SOURCE(G, s)\n2 S = empty set\n3 Q = G.V\n4 while Q != empty set\n5   u = EXTRACT-MIN(Q)\n6   S = S union {u}\n7   for each v in G.Adj[u]\n8     RELAX(u, v, w)",
+    "example": {
+      "input": "Graph with vertices {s, t, x, y, z} and source s. Weights: (s,t)=6, (s,y)=7, (t,x)=5, (y,x)=-3, (x,t)=-2...",
+      "steps": [
+        "Bellman-Ford:",
+        "Pass 1: Relax (s,t), (s,y). t.d=6, y.d=7.",
+        "Pass 2: Relax (t,x), (y,x). x.d=4.",
+        "Check for negative cycles. None found."
+      ],
+      "output": "Shortest path distances from s."
+    },
+    "complexity": {
+      "time": {
+        "best": "O(V + E) (for DAGs)",
+        "average": "O(E lg V) (Dijkstra)",
+        "worst": "O(VE) (Bellman-Ford)"
+      },
+      "space": "O(V)",
+      "recurrence": "N/A"
+    },
+    "proof_or_correctness": "Dijkstra's Correctness: At the start of each iteration of the while loop, v.d = delta(s, v) for all v in S.",
+    "advantages": [
+      "Bellman-Ford detects negative cycles.",
+      "Dijkstra's is very efficient for graphs with nonnegative weights."
+    ],
+    "disadvantages": [
+      "Dijkstra's fails if there are negative edge weights.",
+      "Bellman-Ford is slower than Dijkstra's."
+    ],
+    "comparisons": {
+      "bellman_ford_vs_dijkstra": "Bellman-Ford handles negative weights and detects cycles but is O(VE); Dijkstra's is faster at O(E lg V) but requires nonnegative weights."
+    },
+    "common_mistakes": [
+      "Using Dijkstra's on a graph with negative weights.",
+      "Forgetting to initialize distances to infinity."
+    ],
+    "exam_questions": [
+      {
+        "question": "What does the Bellman-Ford algorithm return if there is a negative cycle reachable from s?",
+        "answer": "FALSE."
+      },
+      {
+        "question": "What is the complexity of finding shortest paths in a directed acyclic graph (dag)?",
+        "answer": "Theta(V + E)."
+      },
+      {
+        "question": "Explain the relaxation property.",
+        "answer": "If we relax edge (u, v), the distance estimate v.d can only decrease or stay the same, and it is always an upper bound on the true shortest path distance delta(s, v)."
+      },
+      {
+        "question": "Why is Dijkstra's algorithm greedy?",
+        "answer": "Because it repeatedly chooses the vertex with the lowest current distance estimate."
+      },
+      {
+        "question": "What is a 'Shortest-Paths Tree'?",
+        "answer": "A rooted tree containing the shortest paths from source s to all reachable vertices."
+      },
+      {
+        "question": "What is 'Arbitrage' and how does it relate to graphs?",
+        "answer": "It's the use of exchange rate discrepancies to profit. It can be modeled as finding negative-weight cycles in a graph where weights are logs of exchange rates."
+      },
+      {
+        "question": "What is the running time of Dijkstra's using a Fibonacci heap?",
+        "answer": "O(V lg V + E)."
+      },
+      {
+        "question": "Describe the Difference Constraints problem.",
+        "answer": "Finding a vector x that satisfies a set of linear inequalities of the form x_j - x_i <= w_ij."
+      },
+      {
+        "question": "How do you solve the All-Pairs Shortest Paths problem?",
+        "answer": "Using the Floyd-Warshall algorithm (O(V^3)) or Johnson's algorithm for sparse graphs."
+      },
+      {
+        "question": "What is the 'triangle inequality' for shortest paths?",
+        "answer": "For all edges (u, v), delta(s, v) <= delta(s, u) + w(u, v)."
+      }
+    ],
+    "related_topics": [
+      "graph-algorithms-representations",
+      "minimum-spanning-trees"
+    ]
   }
 ]
