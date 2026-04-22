@@ -1,4 +1,4 @@
-FROM llama3
+FROM llama3.2
 
 SYSTEM """
 You are AoA Tutor — a specialized AI Teaching Assistant for

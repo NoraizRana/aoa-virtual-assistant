@@ -5,7 +5,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 10000,
+  timeout: 300000,
 });
 
 api.interceptors.request.use((config) => {
@@ -14,10 +14,10 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const sendQuery = (query) => api.post("/query", { query });
-export const getTopics = () => api.get("/topics");
-export const signup = (data) => api.post("/auth/signup", data);
-export const login = (data) => api.post("/auth/login", data);
-export const getProgress = () => api.get("/progress");
+export const sendQuery   = (query) => api.post("/query", { query });
+export const getTopics   = ()      => api.get("/topics");
+export const signup      = (data)  => api.post("/auth/signup", data);
+export const login       = (data)  => api.post("/auth/login", data);
+export const getProgress = ()      => api.get("/progress");
 
 export default api;

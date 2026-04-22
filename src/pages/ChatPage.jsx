@@ -39,24 +39,30 @@ const ChatPage = () => {
     setLoading(true);
 
     try {
-      const res = await sendQuery(query);
-      const data = res.data;
+  const res = await sendQuery(query);
+  const data = res.data;
 
-      if (data.structured) {
-        addMessage("bot", null, data.structured);
-      } else {
-        addMessage(
-          "bot",
-          data.message ||
-            "❓ I couldn't find that topic. Try: Merge Sort, Quick Sort, Binary Search, Dijkstra, or Dynamic Programming."
-        );
-      }
-    } catch (err) {
-      addMessage(
-        "bot",
-        "⚠️ Could not connect to the server. Please make sure the backend is running on port 5000."
-      );
-    } finally {
+  if (data.structured) {
+    // Check if AI refused the query
+    if (data.structured.type === "error" || 
+        data.structured.type === "restriction") {
+      addMessage("bot", data.structured.definition);
+    } else {
+      addMessage("bot", null, data.structured);
+    }
+  } else {
+    addMessage(
+      "bot",
+      data.message || "❓ I couldn't find that topic."
+    );
+  }
+} catch (err) {
+  console.error("Frontend error:", err);
+  addMessage(
+    "bot",
+    "⚠️ Could not connect to the server. Please make sure the backend is running on port 3001."
+  );
+} finally {
       setLoading(false);
     }
   };
