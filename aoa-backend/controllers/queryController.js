@@ -1,7 +1,8 @@
 const Topic    = require("../models/Topic");
 const Query    = require("../models/Query");
 const Progress = require("../models/Progress");
-const { askAI, checkOllama }  = require("../utils/aiEngine");
+const { askWithRAG } = require("../utils/ragEngine");
+const { checkOllama } = require("../utils/aiEngine");
 const { matchTopic }          = require("../utils/matcher");
 const { detectIntent }        = require("../utils/intentDetector");
 const { parseRecurrence, solveMasterTheorem, getComplexity } = require("../utils/mathSolver");
@@ -43,9 +44,8 @@ const handleQuery = async (req, res) => {
     // PATH A — Use Llama3 AI (when Ollama is running)
     // ════════════════════════════════════════════════════════════
     if (ollamaAvailable) {
-      console.log("🤖 Routing to Llama3 AI...");
-
-      const aiResult = await askAI(query);
+  console.log("📚 Using RAG — searching CLRS book...");
+  const aiResult = await askWithRAG(query);  // ← changed
 
       if (aiResult.success) {
         const data = aiResult.data;
