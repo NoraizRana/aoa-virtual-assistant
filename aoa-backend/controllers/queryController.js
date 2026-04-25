@@ -1,6 +1,6 @@
 const Query    = require("../models/Query");
 const Progress = require("../models/Progress");
-const { askSmartEngine } = require("../utils/smartEngine");
+const { processQuery } = require("../utils/productionEngine");
 const { logUnknownQuery } = require("../utils/selfLearning");
 
 const handleQuery = async (req, res) => {
@@ -10,24 +10,18 @@ const handleQuery = async (req, res) => {
       return res.status(400).json({ message: "Query cannot be empty" });
 
     const userId = req.user?.id || null;
-
-    console.log("─".repeat(50));
-    console.log("📨 Query:", query);
-
-    // Run Smart Engine
-    const result = await askSmartEngine(query);
+    const result = await processQuery(query);
 
     if (!result.success) {
       await logUnknownQuery(query, userId);
       return res.json({
         success: false,
-        message: "❓ Could not process query. Please try again.",
+        message: "❓ Could not process your query. Please rephrase and try again.",
       });
     }
 
     const data = result.data;
 
-    // Log to DB
     await Query.create({
       userId,
       queryText:     query,
@@ -36,7 +30,6 @@ const handleQuery = async (req, res) => {
       inputMode,
     });
 
-    // Update progress
     if (userId && data.topic) {
       await Progress.findOneAndUpdate(
         { userId },
@@ -51,22 +44,25 @@ const handleQuery = async (req, res) => {
 
     return res.json({
       success: true,
-      source:  "rag-clrs",
+      source:  "production-engine",
       structured: {
         type:            data.type,
         topic:           data.topic,
         definition:      data.answer,
-        keyPoints:       data.keyPoints  || [],
-        timeComplexity:  data.complexity?.time  || null,
-        spaceComplexity: data.complexity?.space || null,
-        followUp:        data.followUp   || [],
-        chapters:        data.chapters   || [],
-        steps:           [],
+        steps:           data.steps           || [],
+        pseudocode:      data.pseudocode       || null,
+        example:         data.example         || null,
+        keyPoints:       data.keyPoints        || [],
+        timeComplexity:  data.timeComplexity   || null,
+        spaceComplexity: data.spaceComplexity  || null,
+        followUp:        data.followUp         || [],
+        chapters:        data.chapters         || [],
+        source:          data.source           || "CLRS",
       },
     });
 
   } catch (err) {
-    console.error("💥 Query error:", err);
+    console.error("💥 Controller error:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };

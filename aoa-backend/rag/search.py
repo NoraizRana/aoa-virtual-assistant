@@ -14,7 +14,7 @@ _model  = None
 _index  = None
 _chunks = None
 
-def load_resources():
+def load():
     global _model, _index, _chunks
     if _model is None:
         _model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -23,43 +23,48 @@ def load_resources():
             _chunks = pickle.load(f)
     return _model, _index, _chunks
 
-def trim_to_sentences(text, max_words=80):
-    """Return only the most relevant sentences"""
-    sentences = re.split(r'(?<=[.!?])\s+', text)
-    result    = []
-    count     = 0
-    for s in sentences:
-        words = s.split()
-        if count + len(words) > max_words:
-            break
-        result.append(s)
-        count += len(words)
-    return ' '.join(result) if result else text[:400]
+def clean(text):
+    text = re.sub(r'\(cid:\d+\)', '', text)
+    text = re.sub(r'[^\x20-\x7E]', ' ', text)
+    text = re.sub(r'\s+', ' ', text)
+    return text.strip()
 
-def search(query, top_k=3):
-    model, index, chunks = load_resources()
-    query_vec = model.encode([query]).astype(np.float32)
-    distances, indices = index.search(query_vec, top_k)
+def extract_sentences(text, max_count=4):
+    text  = clean(text)
+    sents = re.split(r'(?<=[.!?])\s+', text)
+    good  = [
+        s.strip() for s in sents
+        if 10 < len(s.split()) < 50
+        and sum(c.isalpha() for c in s) / max(len(s), 1) > 0.55
+    ]
+    return good[:max_count]
 
-    results = []
+def search(query, top_k=5):
+    model, index, chunks = load()
+    vec = model.encode([query]).astype(np.float32)
+    distances, indices = index.search(vec, top_k)
+
+    results      = []
     seen_chapters = set()
 
     for i, idx in enumerate(indices[0]):
-        if idx < len(chunks):
-            chunk   = chunks[idx]
-            chapter = chunk["chapter"]
+        if idx >= len(chunks):
+            continue
+        chunk   = chunks[idx]
+        chapter = chunk["chapter"]
+        if chapter in seen_chapters:
+            continue
+        seen_chapters.add(chapter)
 
-            # Skip duplicate chapters — keep best match only
-            if chapter in seen_chapters:
-                continue
-            seen_chapters.add(chapter)
+        sentences = extract_sentences(chunk["text"])
+        if not sentences:
+            continue
 
-            results.append({
-                "chapter": chapter,
-                "text":    trim_to_sentences(chunk["text"], max_words=80),
-                "score":   float(distances[0][i]),
-                "rank":    len(results) + 1,
-            })
+        results.append({
+            "chapter":   chapter,
+            "sentences": sentences,
+            "score":     float(distances[0][i]),
+        })
 
     return results
 
@@ -67,7 +72,5 @@ if __name__ == "__main__":
     if not os.path.exists(INDEX_PATH):
         print(json.dumps({"error": "Run build_index.py first"}))
         sys.exit(1)
-
-    query   = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "merge sort"
-    results = search(query)
-    print(json.dumps(results, indent=2))
+    query = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "merge sort"
+    print(json.dumps(search(query), indent=2))
