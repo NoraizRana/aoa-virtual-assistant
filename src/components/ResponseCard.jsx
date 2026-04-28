@@ -59,33 +59,35 @@ const ResponseCard = ({ data }) => {
 
       {/* ── COMPARATIVE ── */}
       {data.type === "comparative" && (
-        <div className="space-y-3">
-          {data.comparison_text && (
-            <p className="text-gray-700 italic">{data.comparison_text}</p>
+  <div className="space-y-3">
+    {data.comparison_text && (
+      <p className="text-gray-600 italic text-xs bg-yellow-50 
+        border-l-4 border-yellow-400 px-3 py-2 rounded">
+        {data.comparison_text}
+      </p>
+    )}
+    <div className="grid grid-cols-2 gap-3">
+      {[data.topic1, data.topic2].map((t, i) => t && (
+        <div key={i} className="border border-indigo-100 
+          rounded-xl p-3 space-y-2 bg-gray-50">
+          <p className="font-bold text-indigo-700 text-sm">{t.name}</p>
+          {t.timeComplexity && (
+            <p className="text-xs text-gray-600">⏱ {t.timeComplexity}</p>
           )}
-          <div className="grid grid-cols-2 gap-3">
-            {[data.topic1, data.topic2].map((t, i) => (
-              <div key={i} className="border rounded-xl p-3 space-y-2">
-                <p className="font-bold text-indigo-700">{t.name}</p>
-                {t.complexity?.time && (
-                  <p className="text-xs">
-                    ⏱ {t.complexity.time.average || t.complexity.time.worst || JSON.stringify(t.complexity.time)}
-                  </p>
-                )}
-                {t.complexity?.space && (
-                  <p className="text-xs">💾 {t.complexity.space}</p>
-                )}
-                {t.advantages?.slice(0, 2).map((a, j) => (
-                  <p key={j} className="text-xs text-green-600">✓ {a}</p>
-                ))}
-                {t.disadvantages?.slice(0, 2).map((d, j) => (
-                  <p key={j} className="text-xs text-red-500">✗ {d}</p>
-                ))}
-              </div>
-            ))}
-          </div>
+          {t.spaceComplexity && (
+            <p className="text-xs text-gray-600">💾 {t.spaceComplexity}</p>
+          )}
+          {(t.advantages || []).slice(0, 2).map((a, j) => (
+            <p key={j} className="text-xs text-green-600">✅ {a}</p>
+          ))}
+          {(t.disadvantages || []).slice(0, 2).map((d, j) => (
+            <p key={j} className="text-xs text-red-500">❌ {d}</p>
+          ))}
         </div>
-      )}
+      ))}
+    </div>
+  </div>
+)}
 
       {/* ── COMPLEXITY ── */}
       {data.type === "complexity" && (

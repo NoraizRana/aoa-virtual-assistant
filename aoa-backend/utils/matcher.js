@@ -1,68 +1,75 @@
+/**
+ * matcher.js — Smart Topic Matcher
+ * Finds the most relevant topic for any AoA query
+ */
+
 const matchTopic = (queryText, topics) => {
   if (!queryText || !topics?.length) return null;
 
   const q = queryText.toLowerCase().trim();
 
-  // ── Priority 1: Exact alias match ────────────────────────────
+  // ── Pass 1: Exact alias match ─────────────────────────────────
   for (const topic of topics) {
     const aliases = (topic.aliases || []).map(a => a.toLowerCase());
-    if (aliases.includes(q)) {
-      console.log(`✅ Exact alias: "${topic.name}"`);
+    if (aliases.some(a => a === q)) {
+      console.log(`✅ [Exact alias] "${topic.name}"`);
       return topic;
     }
   }
 
-  // ── Priority 2: Exact name match ──────────────────────────────
+  // ── Pass 2: Exact name match ──────────────────────────────────
   for (const topic of topics) {
     if (topic.name.toLowerCase() === q) {
-      console.log(`✅ Exact name: "${topic.name}"`);
+      console.log(`✅ [Exact name] "${topic.name}"`);
       return topic;
     }
   }
 
-  // ── Priority 3: Score every topic — pick highest ──────────────
-  let best  = null;
-  let bestScore = 0;
-
-  for (const topic of topics) {
+  // ── Pass 3: Score every topic ─────────────────────────────────
+  const scored = topics.map(topic => {
     let score = 0;
-    const name    = topic.name.toLowerCase();
-    const aliases = (topic.aliases  || []).map(a => a.toLowerCase());
-    const keywords= (topic.keywords || []).map(k => k.toLowerCase());
+    const name     = topic.name.toLowerCase();
+    const aliases  = (topic.aliases  || []).map(a => a.toLowerCase());
+    const keywords = (topic.keywords || []).map(k => k.toLowerCase());
 
-    // Alias contains query exactly
+    // Alias scoring
     for (const alias of aliases) {
-      if (alias === q) { score += 100; break; }
-      if (alias.includes(q)) { score += 50; break; }
-      if (q.includes(alias) && alias.length > 4) { score += 40; break; }
+      if (alias === q)                              { score += 200; break; }
+      if (alias.includes(q) && q.length >= 4)      { score += 80;  }
+      if (q.includes(alias) && alias.length >= 4)  { score += 60;  }
     }
 
-    // Keyword exact match
+    // Keyword scoring
     for (const kw of keywords) {
-      if (kw === q) { score += 80; break; }
-      if (q.includes(kw) && kw.length > 4) { score += kw.length * 3; }
-      if (kw.includes(q) && q.length > 4)  { score += q.length * 2; }
+      if (kw === q)                             { score += 150; }
+      if (q.includes(kw) && kw.length >= 4)    { score += kw.length * 5; }
+      if (kw.includes(q) && q.length >= 4)     { score += q.length * 3;  }
     }
 
-    // Name match (lower priority — avoid broad matches)
-    if (name === q) {
-      score += 90;
-    } else if (q.split(" ").every(word => name.includes(word)) && q.length > 4) {
-      score += 30;
-    }
+    // Name scoring
+    if (name === q)                               { score += 180; }
+    else if (q.includes(name) && name.length > 4) { score += 70;  }
+    else if (name.includes(q) && q.length > 4)    { score += 50;  }
 
-    if (score > bestScore) {
-      bestScore = score;
-      best = topic;
-    }
+    // Word-level matching
+    const qWords = q.split(/\s+/).filter(w => w.length > 2);
+    const nameWords = name.split(/\s+/);
+    const matchedWords = qWords.filter(w => nameWords.some(nw => nw.includes(w) || w.includes(nw)));
+    score += matchedWords.length * 15;
+
+    return { topic, score };
+  });
+
+  // Sort by score descending
+  scored.sort((a, b) => b.score - a.score);
+
+  const best = scored[0];
+  if (best && best.score >= 30) {
+    console.log(`✅ [Scored ${best.score}] "${best.topic.name}"`);
+    return best.topic;
   }
 
-  if (bestScore >= 30) {
-    console.log(`✅ Best match: "${best.name}" (score: ${bestScore})`);
-    return best;
-  }
-
-  console.log(`❌ No match for: "${q}"`);
+  console.log(`❌ No match found for: "${q}"`);
   return null;
 };
 
